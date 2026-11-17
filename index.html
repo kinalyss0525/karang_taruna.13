@@ -513,9 +513,9 @@
   <!-- Supabase JS v2 -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // MASUKKAN KREDENSIAL SUPABASE ANDA DI SINI
-    const SUPABASE_URL = 'PASTE_PROJECT_URL_DI_SINI';
-    const SUPABASE_ANON_KEY = 'PASTE_PUBLISHABLE_KEY_DI_SINI';
+    // MASUKKAN URL & KUNCI API SUPABASE DI SINI
+    const SUPABASE_URL = 'https://xxxxxx.supabase.co'; // Ganti dengan Project URL Anda
+    const SUPABASE_ANON_KEY = 'sb_publishable_...'; // Ganti dengan Publishable Key dari halaman yang Anda buka
     const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const $ = (s) => document.querySelector(s);
@@ -570,7 +570,7 @@
     async function muatData(){const tables=['anggota','kas','proker'];const results=await Promise.all(tables.map(t=>db.from(t).select('*').order('created_at',{ascending:false})));for(let i=0;i<tables.length;i++){if(results[i].error)throw results[i].error;DATA[tables[i]]=results[i].data||[];}DATA.absen=await cekAdmin()?((await db.from('absen').select('*').order('created_at',{ascending:false})).data||[]):[];renderSemua();}
     function renderSemua(){renderBeranda();renderAnggota();renderKas();renderProker();}
     addEventListener('keydown',e=>{if(e.key==='Escape'){if(tutupKonfirmasi)tutupKonfirmasi(false);else if(!$('#modal').hidden)tutupModal();}});
-    async function mulai(){try{if(SUPABASE_URL.includes('PASTE_')||SUPABASE_ANON_KEY.includes('PASTE_')){toast('Isi SUPABASE_URL dan SUPABASE_ANON_KEY di bagian atas file HTML.',true);return;}await muatData();await renderAdmin();go(location.hash.slice(1)||'dashboard');}catch(e){console.error(e);toast('Gagal memuat database: '+e.message,true);}}
+    async function mulai(){try{if(SUPABASE_URL.includes('xxxxxx')||SUPABASE_ANON_KEY.includes('sb_publishable_...')){toast('Isi SUPABASE_URL dan SUPABASE_ANON_KEY di bagian bawah file HTML.',true);return;}await muatData();await renderAdmin();go(location.hash.slice(1)||'dashboard');}catch(e){console.error(e);toast('Gagal memuat database: '+e.message,true);}}
     db.auth.onAuthStateChange(()=>{renderAdmin();});
     mulai();
   </script>
