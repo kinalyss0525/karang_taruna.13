@@ -1,0 +1,2214 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0B2E6B">
+  <title>Karang Taruna RT 13 Nusa Muda</title>
+
+  <!-- Ikon & Font -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================
+       DAFTAR ISI CSS
+       1. Variabel warna      8. Anggota
+       2. Reset dasar         9. Kas
+       3. Header & Menu      10. Program Kerja
+       4. Layout & Tab       11. Admin
+       5. Komponen umum      12. Modal (popup)
+       6. Tombol & Label     13. Notifikasi (toast)
+       7. Beranda            14. Responsif (HP)
+       ========================================================== */
+
+
+    /* ---------- 1. VARIABEL WARNA (ubah warna tema di sini) ---------- */
+    :root {
+      --navy: #0B2E6B;
+      --navy2: #1448A8;
+      --gold: #F6B80B;
+      --gold2: #FFE08A;
+      --green: #13995A;
+      --red: #D93F3F;
+      --bg: #F3F6FC;
+      --ink: #0F2145;
+      --mut: #5A6A88;
+      --line: #E1E7F2;
+      --r: 16px;
+    }
+
+
+    /* ---------- 2. RESET DASAR ---------- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    body {
+      font: 15px/1.55 'Plus Jakarta Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+      color: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      border: 0;
+      background: none;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 2px;
+    }
+
+    h2 {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -.01em;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .mut {
+      color: var(--mut);
+    }
+
+    .mono {
+      font-variant-numeric: tabular-nums;
+    }
+
+
+    /* ---------- 3. HEADER & MENU NAVIGASI ---------- */
+    header {
+      background: var(--navy);
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      border-bottom: 4px solid var(--gold);
+    }
+
+    .header-inner {
+      max-width: 1080px;
+      margin: auto;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* Logo + nama organisasi */
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      margin-right: auto;
+      min-width: 0;
+    }
+
+    .brand b {
+      display: block;
+      font-size: 13px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+
+    .brand small {
+      font-size: 11px;
+      color: var(--gold2);
+    }
+
+    .logo {
+      position: relative;
+      flex: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: #fff;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .logo img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #fff;
+    }
+
+    /* Menu: di laptop ada di header, di HP pindah ke bawah (lihat bagian 14) */
+    nav {
+      display: flex;
+      gap: 4px;
+    }
+
+    nav button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      color: #C9D6F2;
+      font-weight: 600;
+      font-size: 14px;
+      transition: .2s;
+    }
+
+    nav button:hover {
+      background: rgba(255, 255, 255, .1);
+      color: #fff;
+    }
+
+    nav button[aria-current=page] {
+      background: var(--gold);
+      color: var(--navy);
+    }
+
+
+    /* ---------- 4. LAYOUT & TAB ---------- */
+    main {
+      max-width: 1080px;
+      margin: auto;
+      padding: 20px 16px 40px;
+    }
+
+    .tab {
+      display: none;
+    }
+
+    .tab.on {
+      display: block;
+      animation: naik .35s ease;
+    }
+
+    @keyframes naik {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .g2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .g3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .page-head {
+      margin-bottom: 16px;
+    }
+
+    .page-head p {
+      color: var(--mut);
+      font-size: 14px;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--mut);
+      font-size: 12.5px;
+      padding: 8px 16px 28px;
+    }
+
+
+    /* ---------- 5. KOMPONEN UMUM (kartu, input, state kosong) ---------- */
+    .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 18px;
+      box-shadow: 0 1px 2px rgba(11, 46, 107, .05);
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      min-height: 44px;
+      padding: 11px 14px;
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      transition: .15s;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--navy2);
+      box-shadow: 0 0 0 4px rgba(20, 72, 168, .12);
+    }
+
+    .field span {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: var(--mut);
+      padding: 36px 12px;
+      background: #fff;
+      border: 1.5px dashed var(--line);
+      border-radius: 14px;
+    }
+
+    .empty i {
+      display: block;
+      font-size: 26px;
+      margin-bottom: 8px;
+      color: var(--gold);
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .section-head a {
+      color: var(--navy2);
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .section-head a:hover {
+      text-decoration: underline;
+    }
+
+
+    /* ---------- 6. TOMBOL & LABEL STATUS ---------- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 14px;
+      transition: .15s;
+    }
+
+    .btn:active {
+      transform: scale(.97);
+    }
+
+    .btn:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    .btn-gold {
+      background: var(--gold);
+      color: var(--navy);
+    }
+
+    .btn-gold:hover {
+      background: #FFC72C;
+    }
+
+    .btn-navy {
+      background: var(--navy);
+      color: #fff;
+    }
+
+    .btn-navy:hover {
+      background: var(--navy2);
+    }
+
+    .btn-outline {
+      background: #fff;
+      border: 1.5px solid var(--line);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--navy);
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, .14);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, .35);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, .24);
+    }
+
+    .btn-danger {
+      background: var(--red);
+      color: #fff;
+    }
+
+    /* Label kecil berwarna (status) */
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .chip-ok {
+      background: #E4F6EC;
+      color: #0B7A45;
+    }
+
+    .chip-blue {
+      background: #E3ECFF;
+      color: var(--navy2);
+    }
+
+    .chip-gray {
+      background: #EEF0F4;
+      color: #5A6577;
+    }
+
+    .text-green {
+      color: var(--green);
+    }
+
+    .text-red {
+      color: var(--red);
+    }
+
+
+    /* ---------- 7. BERANDA ---------- */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      padding: 30px 26px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--navy), var(--navy2));
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      right: -70px;
+      top: -70px;
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: 70px;
+      bottom: -90px;
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .hero>* {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero .chip {
+      background: rgba(255, 255, 255, .16);
+      color: var(--gold2);
+    }
+
+    .hero h2 {
+      font-size: 28px;
+      margin: 12px 0 8px;
+      max-width: 520px;
+    }
+
+    .hero p {
+      color: #D6E1F8;
+      max-width: 520px;
+      font-size: 14.5px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 16px;
+      margin-top: 18px;
+      font-size: 12.5px;
+      color: #C9D6F2;
+    }
+
+    /* Kartu statistik (angka ringkasan) */
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      text-align: left;
+      transition: .2s;
+    }
+
+    button.stat:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(11, 46, 107, .12);
+    }
+
+    .stat small {
+      display: block;
+      color: var(--mut);
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .stat strong {
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .stat-icon {
+      flex: none;
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+    }
+
+    .icon-blue {
+      background: #E3ECFF;
+      color: var(--navy2);
+    }
+
+    .icon-gold {
+      background: #FFF3CC;
+      color: #B07F00;
+    }
+
+    .icon-green {
+      background: #E4F6EC;
+      color: var(--green);
+    }
+
+    .icon-red {
+      background: #FDECEC;
+      color: var(--red);
+    }
+
+
+    /* ---------- 8. ANGGOTA ---------- */
+    .search {
+      position: relative;
+      margin-bottom: 12px;
+    }
+
+    .search i {
+      position: absolute;
+      left: 14px;
+      top: 15px;
+      color: var(--mut);
+    }
+
+    .search input {
+      padding-left: 40px;
+    }
+
+    .member-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .member {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 12px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+
+    .member-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .member-info b {
+      display: block;
+    }
+
+    .member-info span {
+      font-size: 12.5px;
+      color: var(--mut);
+    }
+
+    .member-info i {
+      color: var(--gold);
+    }
+
+    .avatar {
+      flex: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .av0 {
+      background: var(--navy);
+    }
+
+    .av1 {
+      background: var(--green);
+    }
+
+    .av2 {
+      background: #C98F00;
+    }
+
+    .av3 {
+      background: var(--navy2);
+    }
+
+
+    /* ---------- 9. KAS KEUANGAN ---------- */
+    .card-balance {
+      background: linear-gradient(135deg, var(--navy), var(--navy2));
+      color: #fff;
+      border: 0;
+    }
+
+    .card-balance small {
+      color: var(--gold2) !important;
+    }
+
+    .filter-row {
+      display: flex;
+      gap: 8px;
+      margin: 18px 0 12px;
+      overflow-x: auto;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1.5px solid var(--line);
+      background: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .filter-btn.on {
+      background: var(--navy);
+      color: #fff;
+      border-color: var(--navy);
+    }
+
+    .list {
+      list-style: none;
+      padding: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .trx {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+
+    .trx>div {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .trx b {
+      display: block;
+      font-size: 14px;
+    }
+
+    .trx small {
+      color: var(--mut);
+    }
+
+    .trx strong {
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .trx-icon {
+      flex: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+    }
+
+    .trx-in {
+      background: #E4F6EC;
+      color: var(--green);
+    }
+
+    .trx-out {
+      background: #FDECEC;
+      color: var(--red);
+    }
+
+
+    /* ---------- 10. PROGRAM KERJA ---------- */
+    .proker {
+      margin-bottom: 14px;
+      border-left: 5px solid var(--gold);
+    }
+
+    .proker-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .proker-head small {
+      color: var(--mut);
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: .08em;
+    }
+
+    .proker-head h3 {
+      font-size: 18px;
+    }
+
+    .tiles {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 10px;
+      margin: 14px 0;
+      padding: 12px;
+      background: var(--bg);
+      border-radius: 12px;
+    }
+
+    .tiles small {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--mut);
+    }
+
+    .tiles em {
+      display: block;
+      font-style: normal;
+      font-size: 12px;
+      color: var(--mut);
+    }
+
+    .tiles b {
+      font-size: 14px;
+    }
+
+    /* Timeline rundown acara */
+    .rundown {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0 0 6px;
+      border-left: 3px solid var(--gold2);
+    }
+
+    .rundown li {
+      position: relative;
+      padding: 0 0 12px 18px;
+      font-size: 14px;
+    }
+
+    .rundown li::before {
+      content: "";
+      position: absolute;
+      left: -8.5px;
+      top: 5px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--navy);
+      border: 2px solid #fff;
+    }
+
+    .rundown b {
+      color: var(--navy2);
+      margin-right: 8px;
+    }
+
+
+    /* ---------- 11. ADMIN (login & panel) ---------- */
+    .login {
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 28px 24px;
+      text-align: center;
+    }
+
+    .login form {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+      text-align: left;
+    }
+
+    .lock {
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 12px;
+      border-radius: 18px;
+      background: var(--gold);
+      color: var(--navy);
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+    }
+
+    .password-wrap {
+      position: relative;
+    }
+
+    .password-wrap button {
+      position: absolute;
+      right: 4px;
+      top: 2px;
+      width: 40px;
+      height: 40px;
+      color: var(--mut);
+    }
+
+    .error {
+      color: var(--red);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .admin-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 14px;
+      padding: 22px;
+      background: var(--navy);
+      color: #fff;
+      border-radius: 20px;
+      border-bottom: 5px solid var(--gold);
+    }
+
+    .admin-banner p {
+      color: #C9D6F2;
+      font-size: 13.5px;
+    }
+
+    .admin-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      padding: 16px;
+      text-align: left;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      transition: .2s;
+    }
+
+    .admin-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(11, 46, 107, .12);
+    }
+
+    .admin-card>div {
+      flex: 1;
+    }
+
+    .admin-card b {
+      display: block;
+    }
+
+    .admin-card span {
+      font-size: 13px;
+      color: var(--mut);
+    }
+
+    .admin-card>.fa-chevron-right {
+      color: var(--mut);
+    }
+
+    .span-all {
+      grid-column: 1 / -1;
+    }
+
+
+    /* ---------- 12. MODAL (popup kelola data & konfirmasi) ---------- */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      background: rgba(8, 24, 56, .55);
+      backdrop-filter: blur(3px);
+    }
+
+    .overlay-confirm {
+      z-index: 80;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 560px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border-radius: 20px;
+      border-top: 5px solid var(--gold);
+      animation: naik .25s ease;
+    }
+
+    .overlay-confirm .modal {
+      max-width: 380px;
+      padding: 22px;
+      text-align: center;
+    }
+
+    .overlay-confirm .modal p {
+      margin: 8px 0 18px;
+      font-weight: 600;
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 16px 18px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .modal-head p {
+      font-size: 13px;
+      color: var(--mut);
+    }
+
+    .modal-close {
+      flex: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      font-size: 20px;
+      color: var(--mut);
+    }
+
+    .modal-close:hover {
+      background: var(--bg);
+    }
+
+    .modal-body {
+      padding: 16px 18px 18px;
+      overflow-y: auto;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    /* Baris data di dalam modal */
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+
+    .row-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .row-text b {
+      display: block;
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .row-text span {
+      font-size: 12.5px;
+      color: var(--mut);
+    }
+
+    .row-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--navy2);
+    }
+
+    .icon-btn:hover {
+      background: #E3ECFF;
+    }
+
+    .icon-btn.danger {
+      background: #FDECEC;
+      color: var(--red);
+    }
+
+    /* Form di dalam modal */
+    .form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .form .wide {
+      grid-column: 1 / -1;
+    }
+
+    .form-actions {
+      grid-column: 1 / -1;
+      display: flex;
+      gap: 10px;
+    }
+
+    .form-actions .btn {
+      flex: 1;
+    }
+
+
+    /* ---------- 13. NOTIFIKASI (toast) ---------- */
+    #toasts {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%);
+      z-index: 90;
+      display: grid;
+      gap: 8px;
+      width: calc(100% - 28px);
+      max-width: 420px;
+    }
+
+    .toast {
+      padding: 12px 16px;
+      background: var(--navy);
+      color: #fff;
+      font-weight: 600;
+      font-size: 14px;
+      border-radius: 12px;
+      border-left: 5px solid var(--green);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
+      animation: naik .25s;
+    }
+
+    .toast.error-toast {
+      border-color: var(--red);
+    }
+
+
+    /* ---------- 14. RESPONSIF (tampilan HP) ---------- */
+    @media (max-width: 820px) {
+      .header-inner {
+        padding: 8px 14px;
+      }
+
+      /* Menu pindah ke bawah layar agar mudah dijangkau jempol */
+      nav {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 40;
+        justify-content: space-around;
+        padding: 6px 6px calc(6px + env(safe-area-inset-bottom));
+        background: #fff;
+        border-top: 1px solid var(--line);
+        box-shadow: 0 -6px 20px rgba(11, 46, 107, .12);
+      }
+
+      nav button {
+        flex: 1;
+        flex-direction: column;
+        gap: 2px;
+        padding: 6px 4px;
+        border-radius: 12px;
+        font-size: 11px;
+        color: var(--mut);
+      }
+
+      nav button i {
+        font-size: 18px;
+      }
+
+      nav button:hover {
+        background: var(--bg);
+        color: var(--navy);
+      }
+
+      nav button[aria-current=page] {
+        background: var(--navy);
+        color: var(--gold);
+      }
+
+      main {
+        padding-bottom: 96px;
+      }
+
+      #toasts {
+        bottom: 92px;
+      }
+
+      .g2,
+      .g3,
+      .form {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 24px 20px;
+      }
+
+      .hero h2 {
+        font-size: 23px;
+        padding-right: 50px;
+      }
+
+      .hero::before {
+        width: 130px;
+        height: 130px;
+        right: -50px;
+        top: -50px;
+      }
+
+      .hero::after {
+        display: none;
+      }
+
+      /* Modal muncul dari bawah layar */
+      .overlay {
+        align-items: flex-end;
+        padding: 0;
+      }
+
+      .modal {
+        max-height: 94vh;
+        border-radius: 22px 22px 0 0;
+      }
+
+      .overlay-confirm {
+        align-items: center;
+        padding: 14px;
+      }
+
+      .overlay-confirm .modal {
+        border-radius: 20px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ==========================================================
+       BAGIAN 1 — HEADER (logo + menu navigasi)
+       ========================================================== -->
+  <header>
+    <div class="header-inner">
+
+      <div class="brand">
+        <div class="logo">
+          KT
+          <img src="logo_katar.jpeg" alt="Logo Karang Taruna RT 13" onerror="this.remove()">
+        </div>
+        <div>
+          <b>Karang Taruna RT 13</b>
+          <small>Nusa Muda — Pemuda Aktif, RT Maju</small>
+        </div>
+      </div>
+
+      <nav aria-label="Menu utama">
+        <button data-tab="dashboard" onclick="go('dashboard')">
+          <i class="fa-solid fa-house"></i><span>Beranda</span>
+        </button>
+        <button data-tab="anggota" onclick="go('anggota')">
+          <i class="fa-solid fa-users"></i><span>Anggota</span>
+        </button>
+        <button data-tab="kas" onclick="go('kas')">
+          <i class="fa-solid fa-wallet"></i><span>Kas</span>
+        </button>
+        <button data-tab="proker" onclick="go('proker')">
+          <i class="fa-solid fa-flag-checkered"></i><span>Proker</span>
+        </button>
+        <button data-tab="admin" onclick="go('admin')">
+          <i class="fa-solid fa-shield-halved"></i><span>Admin</span>
+        </button>
+      </nav>
+
+    </div>
+  </header>
+
+
+  <main>
+
+    <!-- ========================================================
+         BAGIAN 2 — HALAMAN BERANDA (isi dibuat oleh JS: renderBeranda)
+         ======================================================== -->
+    <section id="tab-dashboard" class="tab"></section>
+
+
+    <!-- ========================================================
+         BAGIAN 3 — HALAMAN ANGGOTA
+         ======================================================== -->
+    <section id="tab-anggota" class="tab">
+      <div class="page-head">
+        <h2>Anggota Karang Taruna</h2>
+        <p>Pemuda-pemudi warga RT 13 Nusa Muda yang aktif bergerak.</p>
+      </div>
+
+      <div class="search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input id="cari-anggota" type="search" placeholder="Cari nama atau jabatan…"
+               aria-label="Cari anggota" oninput="renderAnggota()">
+      </div>
+
+      <p id="jumlah-anggota" class="mut" style="font-size:13px; margin-bottom:10px"></p>
+      <div id="daftar-anggota" class="member-grid"></div>
+    </section>
+
+
+    <!-- ========================================================
+         BAGIAN 4 — HALAMAN KAS KEUANGAN
+         ======================================================== -->
+    <section id="tab-kas" class="tab">
+      <div class="page-head">
+        <h2>Transparansi Kas</h2>
+        <p>Semua arus dana masuk dan keluar, termasuk dari tiap program kerja, dapat dilihat warga.</p>
+      </div>
+
+      <!-- Kartu ringkasan saldo -->
+      <div class="grid g3">
+        <div class="card card-balance stat">
+          <span class="stat-icon icon-gold"><i class="fa-solid fa-sack-dollar"></i></span>
+          <div><small>Saldo Kas</small><strong id="kas-saldo"></strong></div>
+        </div>
+        <div class="card stat">
+          <span class="stat-icon icon-green"><i class="fa-solid fa-arrow-down"></i></span>
+          <div><small>Total Pemasukan</small><strong id="kas-masuk" class="text-green"></strong></div>
+        </div>
+        <div class="card stat">
+          <span class="stat-icon icon-red"><i class="fa-solid fa-arrow-up"></i></span>
+          <div><small>Total Pengeluaran</small><strong id="kas-keluar" class="text-red"></strong></div>
+        </div>
+      </div>
+
+      <!-- Tombol filter transaksi -->
+      <div class="filter-row" role="group" aria-label="Filter transaksi">
+        <button class="filter-btn on" data-filter="Semua" onclick="setFilterKas('Semua')">Semua</button>
+        <button class="filter-btn" data-filter="Masuk" onclick="setFilterKas('Masuk')">Uang Masuk</button>
+        <button class="filter-btn" data-filter="Keluar" onclick="setFilterKas('Keluar')">Uang Keluar</button>
+      </div>
+
+      <!-- Riwayat transaksi -->
+      <ul id="daftar-kas" class="list"></ul>
+    </section>
+
+
+    <!-- ========================================================
+         BAGIAN 5 — HALAMAN PROGRAM KERJA
+         ======================================================== -->
+    <section id="tab-proker" class="tab">
+      <div class="page-head">
+        <h2>Program Kerja</h2>
+        <p>Agenda kegiatan lengkap dengan jadwal, panitia, dana, dan rundown acara.</p>
+      </div>
+      <div id="daftar-proker"></div>
+    </section>
+
+
+    <!-- ========================================================
+         BAGIAN 6 — HALAMAN ADMIN (form login + panel pengurus)
+         ======================================================== -->
+    <section id="tab-admin" class="tab">
+
+      <!-- 6a. Form login -->
+      <div id="admin-login" class="card login">
+        <div class="lock"><i class="fa-solid fa-lock"></i></div>
+        <h3>Panel Pengurus</h3>
+        <p class="mut" style="font-size:14px">Masuk untuk mengelola data Karang Taruna.</p>
+
+        <form onsubmit="handleLogin(event)">
+          <label class="field">
+            <span>Username</span>
+            <input id="login-user" autocomplete="username" autocapitalize="none" required>
+          </label>
+
+          <label class="field">
+            <span>Password</span>
+            <div class="password-wrap">
+              <input id="login-pass" type="password" autocomplete="current-password"
+                     required style="padding-right:46px">
+              <button type="button" onclick="togglePassword()" aria-label="Tampilkan password">
+                <i id="icon-mata" class="fa-solid fa-eye"></i>
+              </button>
+            </div>
+          </label>
+
+          <p id="login-error" class="error" role="alert" hidden>
+            <i class="fa-solid fa-circle-exclamation"></i> Username atau password salah. Coba lagi.
+          </p>
+
+          <button id="login-btn" class="btn btn-navy">Masuk Sistem</button>
+        </form>
+      </div>
+
+      <!-- 6b. Panel pengurus (diisi JS: renderAdmin) -->
+      <div id="admin-panel" hidden></div>
+
+    </section>
+  </main>
+
+  <footer>© Karang Taruna RT 13 Nusa Muda · Dari warga, oleh pemuda, untuk lingkungan</footer>
+
+
+  <!-- ==========================================================
+       BAGIAN 7 — MODAL KELOLA DATA (anggota, kas, proker, admin, absensi)
+       Isinya diganti-ganti oleh JS sesuai menu admin yang dibuka.
+       ========================================================== -->
+  <div id="modal" class="overlay" hidden onclick="if (event.target === this) tutupModal()">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-judul">
+      <div class="modal-head">
+        <div>
+          <h3 id="modal-judul"></h3>
+          <p id="modal-sub"></p>
+        </div>
+        <button class="modal-close" onclick="tutupModal()" aria-label="Tutup">×</button>
+      </div>
+      <div class="modal-body" id="modal-isi"></div>
+    </div>
+  </div>
+
+
+  <!-- ==========================================================
+       BAGIAN 8 — DIALOG KONFIRMASI HAPUS
+       ========================================================== -->
+  <div id="konfirmasi" class="overlay overlay-confirm" hidden>
+    <div class="modal" role="alertdialog" aria-modal="true">
+      <div class="lock" style="background:#FDECEC; color:var(--red)">
+        <i class="fa-solid fa-trash"></i>
+      </div>
+      <p id="konfirmasi-teks"></p>
+      <div class="form-actions">
+        <button id="konfirmasi-batal" class="btn btn-outline">Batal</button>
+        <button id="konfirmasi-ya" class="btn btn-danger">Ya, Hapus</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ==========================================================
+       BAGIAN 9 — WADAH NOTIFIKASI (toast)
+       ========================================================== -->
+  <div id="toasts" aria-live="polite"></div>
+
+
+  <script>
+    /* ==========================================================
+       DAFTAR ISI JAVASCRIPT
+       1.  Fungsi bantu (format rupiah, tanggal, dll)
+       2.  Data awal (contoh)
+       3.  Penyimpanan (localStorage)
+       4.  Navigasi tab
+       5.  Tampilan Beranda
+       6.  Tampilan Anggota
+       7.  Tampilan Kas
+       8.  Tampilan Program Kerja
+       9.  Admin: login & panel
+       10. Konfigurasi data yang bisa dikelola (CRUD)
+       11. Modal kelola data: daftar, form, simpan, hapus
+       12. Dialog konfirmasi & notifikasi
+       13. Mulai aplikasi
+       ========================================================== */
+
+
+    /* ---------- 1. FUNGSI BANTU ---------- */
+    const $ = (selector) => document.querySelector(selector);
+
+    // Mencegah teks input menjadi kode HTML (keamanan XSS)
+    function esc(teks) {
+      const peta = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+      return String(teks ?? '').replace(/[&<>"']/g, (c) => peta[c]);
+    }
+
+    function rupiah(angka) {
+      return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        maximumFractionDigits: 0
+      }).format(+angka || 0);
+    }
+
+    function formatTanggal(iso) {
+      if (!iso) return '-';
+      return new Date(iso + 'T00:00:00').toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      });
+    }
+
+    function buatId() {
+      return Math.random().toString(36).slice(2, 9);
+    }
+
+    function hariIni() {
+      const lokal = new Date(Date.now() - new Date().getTimezoneOffset() * 60000);
+      return lokal.toISOString().slice(0, 10);
+    }
+
+    // Contoh hasil: "23 hari lagi", "Hari ini", "Sudah lewat"
+    function hitungMundur(iso) {
+      const awalHariIni = new Date().setHours(0, 0, 0, 0);
+      const selisih = Math.ceil((new Date(iso + 'T00:00:00') - awalHariIni) / 86400000);
+      if (selisih > 0) return selisih + ' hari lagi';
+      if (selisih === 0) return 'Hari ini';
+      return 'Sudah lewat';
+    }
+
+    // Warna label untuk setiap status proker
+    const WARNA_STATUS = {
+      'Sedang Berjalan': 'chip-ok',
+      'Akan Datang': 'chip-blue',
+      'Selesai': 'chip-gray'
+    };
+
+    function tampilanKosong(ikon, teks) {
+      return `<div class="empty"><i class="fa-solid fa-${ikon}"></i>${teks}</div>`;
+    }
+
+
+    /* ---------- 2. DATA AWAL (dipakai saat pertama kali dibuka) ---------- */
+    function dataAwal() {
+      const namaAnggota = [
+        'Rido', 'Suryansah', 'Rafi', 'Rican', 'Ilham', 'Fikri', 'Dani', 'Rifqi',
+        'Rizki', 'Denis', 'Adrian', 'Lingkan', 'Amin', 'Rani', 'Amel', 'Yusuf',
+        'Rehan', 'Dafa', 'Fadil', 'Triono', 'Fadli', 'Fahri'
+      ];
+
+      return {
+        anggota: namaAnggota.map((nama, i) => ({
+          id: buatId(),
+          nama: nama,
+          jabatan: i === 0 ? 'Ketua' : 'Anggota',
+          status: 'Aktif'
+        })),
+
+        admin: [
+          { id: buatId(), nama: 'Administrator Utama', username: 'admin', password: 'admin13' }
+        ],
+
+        proker: [
+          {
+            id: 'p1',
+            judul: 'Turnamen Mini Soccer Antar Pemuda RT',
+            tanggal: '2026-12-10',
+            deskripsi: 'Meningkatkan kebersamaan dan sportivitas antar warga muda melalui kompetisi sepak bola mini.',
+            status: 'Sedang Berjalan',
+            danaMasuk: 500000,
+            ketMasuk: 'Sponsor & Pendaftaran Tim',
+            danaKeluar: 1500000,
+            ketKeluar: 'Sewa Lapangan & Pembelian Hadiah',
+            terlibat: 'Rido (Ketua Pelaksana), Rafi, Suryansah, Rican, Ilham',
+            rundown: '08.00 - Upacara Pembukaan\n09.00 - Babak Penyisihan Grup\n15.00 - Pertandingan Final & Penyerahan Hadiah'
+          }
+        ],
+
+        kas: [
+          { id: buatId(), tanggal: '2026-11-01', jenis: 'Masuk', keterangan: 'Iuran Warga Bulanan RT 13', jumlah: 2150000 },
+          { id: buatId(), tanggal: '2026-11-10', jenis: 'Keluar', keterangan: 'Pembelian Alat Kebersihan Kerja Bakti', jumlah: 650000 },
+          {
+            id: buatId(), tanggal: '2026-12-10', jenis: 'Masuk', prokerId: 'p1', jumlah: 500000,
+            keterangan: 'Proker (Turnamen Mini Soccer Antar Pemuda RT): Sponsor & Pendaftaran Tim'
+          },
+          {
+            id: buatId(), tanggal: '2026-12-10', jenis: 'Keluar', prokerId: 'p1', jumlah: 1500000,
+            keterangan: 'Proker (Turnamen Mini Soccer Antar Pemuda RT): Sewa Lapangan & Pembelian Hadiah'
+          }
+        ],
+
+        absen: []
+      };
+    }
+
+
+    /* ---------- 3. PENYIMPANAN (localStorage) ---------- */
+    const KUNCI_SIMPAN = 'katar13_v2';
+    let DATA;   // seluruh data aplikasi ada di sini
+
+    try {
+      DATA = JSON.parse(localStorage.getItem(KUNCI_SIMPAN));
+    } catch (e) { /* abaikan, pakai data awal */ }
+
+    if (!DATA || !DATA.anggota) DATA = dataAwal();
+    DATA.absen = DATA.absen || [];
+
+    function simpanKeBrowser() {
+      try {
+        localStorage.setItem(KUNCI_SIMPAN, JSON.stringify(DATA));
+      } catch (e) { /* penyimpanan penuh / diblokir */ }
+    }
+
+    // Hitung total pemasukan, pengeluaran, dan saldo
+    function hitungKas() {
+      let masuk = 0;
+      let keluar = 0;
+      DATA.kas.forEach((t) => {
+        if (t.jenis === 'Masuk') masuk += +t.jumlah;
+        else keluar += +t.jumlah;
+      });
+      return { masuk: masuk, keluar: keluar, saldo: masuk - keluar };
+    }
+
+
+    /* ---------- 4. NAVIGASI TAB ---------- */
+    const DAFTAR_TAB = ['dashboard', 'anggota', 'kas', 'proker', 'admin'];
+
+    function go(tab) {
+      if (!DAFTAR_TAB.includes(tab)) tab = 'dashboard';
+
+      document.querySelectorAll('.tab').forEach((el) => {
+        el.classList.toggle('on', el.id === 'tab-' + tab);
+      });
+
+      document.querySelectorAll('nav button').forEach((tombol) => {
+        tombol.setAttribute('aria-current', tombol.dataset.tab === tab ? 'page' : 'false');
+      });
+
+      history.replaceState(null, '', '#' + tab);   // tab tetap sama saat di-refresh
+      scrollTo({ top: 0 });
+    }
+
+    window.onhashchange = () => go(location.hash.slice(1));
+
+
+    /* ---------- 5. TAMPILAN BERANDA ---------- */
+    // Satu baris transaksi (dipakai di Beranda dan halaman Kas)
+    function barisTransaksi(t) {
+      const masuk = t.jenis === 'Masuk';
+      return `
+        <li class="trx">
+          <span class="trx-icon ${masuk ? 'trx-in' : 'trx-out'}">
+            <i class="fa-solid fa-arrow-${masuk ? 'down' : 'up'}"></i>
+          </span>
+          <div>
+            <b>${esc(t.keterangan)}</b>
+            <small>${formatTanggal(t.tanggal)}</small>
+          </div>
+          <strong class="${masuk ? 'text-green' : 'text-red'}">
+            ${masuk ? '+' : '−'} ${rupiah(t.jumlah)}
+          </strong>
+        </li>`;
+    }
+
+    function renderBeranda() {
+      const kas = hitungKas();
+      const prokerAktif = DATA.proker.filter((p) => p.status !== 'Selesai');
+      const prokerTerdekat = [...prokerAktif].sort((a, b) => a.tanggal.localeCompare(b.tanggal))[0];
+      const transaksiTerbaru = [...DATA.kas]
+        .sort((a, b) => b.tanggal.localeCompare(a.tanggal))
+        .slice(0, 4);
+
+      // Kartu "Kegiatan Terdekat"
+      const kartuKegiatan = prokerTerdekat
+        ? `
+          <span class="chip ${WARNA_STATUS[prokerTerdekat.status]}">${esc(prokerTerdekat.status)}</span>
+          <h3 style="margin:8px 0 4px">${esc(prokerTerdekat.judul)}</h3>
+          <p class="mut" style="font-size:14px">
+            <i class="fa-regular fa-calendar"></i> ${formatTanggal(prokerTerdekat.tanggal)}
+            · <b>${hitungMundur(prokerTerdekat.tanggal)}</b>
+          </p>`
+        : '<p class="mut">Belum ada kegiatan mendatang.</p>';
+
+      $('#tab-dashboard').innerHTML = `
+
+        <!-- Banner sambutan -->
+        <div class="hero">
+          <span class="chip"><i class="fa-solid fa-bullhorn"></i> Pengumuman RT 13</span>
+          <h2>Selamat Datang, Warga Nusa Muda</h2>
+          <p>Portal resmi Karang Taruna RT 13: koordinasi kegiatan pemuda, laporan kas yang terbuka, dan pemantauan program kerja bersama.</p>
+          <div class="hero-actions">
+            <button class="btn btn-gold" onclick="go('proker')">
+              <i class="fa-solid fa-flag-checkered"></i> Lihat Program Kerja
+            </button>
+            <button class="btn btn-ghost" onclick="go('kas')">
+              <i class="fa-solid fa-wallet"></i> Cek Kas
+            </button>
+          </div>
+          <div class="hero-meta">
+            <span><i class="fa-solid fa-location-dot"></i> Jakarta Utara</span>
+            <span><i class="fa-solid fa-circle-check" style="color:#6EE7A8"></i> Kepengurusan Aktif</span>
+          </div>
+        </div>
+
+        <!-- Tiga kartu ringkasan (bisa diklik) -->
+        <div class="grid g3" style="margin:14px 0">
+          <button class="card stat" onclick="go('anggota')">
+            <span class="stat-icon icon-blue"><i class="fa-solid fa-users"></i></span>
+            <div><small>Anggota Terdaftar</small><strong>${DATA.anggota.length} orang</strong></div>
+          </button>
+          <button class="card stat" onclick="go('kas')">
+            <span class="stat-icon icon-gold"><i class="fa-solid fa-sack-dollar"></i></span>
+            <div><small>Saldo Kas</small><strong>${rupiah(kas.saldo)}</strong></div>
+          </button>
+          <button class="card stat" onclick="go('proker')">
+            <span class="stat-icon icon-green"><i class="fa-solid fa-flag-checkered"></i></span>
+            <div><small>Proker Aktif</small><strong>${prokerAktif.length} kegiatan</strong></div>
+          </button>
+        </div>
+
+        <!-- Kegiatan terdekat & transaksi terbaru -->
+        <div class="grid g2">
+          <div class="card">
+            <div class="section-head">
+              <h3>Kegiatan Terdekat</h3>
+              <a onclick="go('proker')">Semua</a>
+            </div>
+            ${kartuKegiatan}
+          </div>
+
+          <div class="card">
+            <div class="section-head">
+              <h3>Transaksi Terbaru</h3>
+              <a onclick="go('kas')">Semua</a>
+            </div>
+            <ul class="list">
+              ${transaksiTerbaru.map(barisTransaksi).join('') || '<p class="mut">Belum ada transaksi.</p>'}
+            </ul>
+          </div>
+        </div>`;
+    }
+
+
+    /* ---------- 6. TAMPILAN ANGGOTA ---------- */
+    function kartuAnggota(a, i) {
+      const inisial = a.nama.trim().slice(0, 2).toUpperCase();
+      const mahkota = a.jabatan === 'Ketua' ? '<i class="fa-solid fa-crown"></i> ' : '';
+
+      return `
+        <div class="member">
+          <div class="avatar av${i % 4}">${esc(inisial)}</div>
+          <div class="member-info">
+            <b>${esc(a.nama)}</b>
+            <span>${mahkota}${esc(a.jabatan)}</span>
+          </div>
+          <span class="chip chip-ok">${esc(a.status)}</span>
+        </div>`;
+    }
+
+    function renderAnggota() {
+      const kataKunci = ($('#cari-anggota').value || '').toLowerCase();
+      const hasil = DATA.anggota.filter((a) => (a.nama + ' ' + a.jabatan).toLowerCase().includes(kataKunci));
+
+      $('#jumlah-anggota').textContent = `Menampilkan ${hasil.length} dari ${DATA.anggota.length} anggota`;
+      $('#daftar-anggota').innerHTML =
+        hasil.map(kartuAnggota).join('') ||
+        tampilanKosong('user-slash', 'Tidak ada anggota yang cocok dengan pencarian.');
+    }
+
+
+    /* ---------- 7. TAMPILAN KAS ---------- */
+    let filterKas = 'Semua';
+
+    function setFilterKas(jenis) {
+      filterKas = jenis;
+      renderKas();
+    }
+
+    function renderKas() {
+      const kas = hitungKas();
+      $('#kas-saldo').textContent = rupiah(kas.saldo);
+      $('#kas-masuk').textContent = rupiah(kas.masuk);
+      $('#kas-keluar').textContent = rupiah(kas.keluar);
+
+      // Tandai tombol filter yang aktif
+      document.querySelectorAll('.filter-btn').forEach((tombol) => {
+        tombol.classList.toggle('on', tombol.dataset.filter === filterKas);
+      });
+
+      const transaksi = [...DATA.kas]
+        .filter((t) => filterKas === 'Semua' || t.jenis === filterKas)
+        .sort((a, b) => b.tanggal.localeCompare(a.tanggal));
+
+      $('#daftar-kas').innerHTML =
+        transaksi.map(barisTransaksi).join('') ||
+        tampilanKosong('receipt', 'Belum ada transaksi.');
+    }
+
+
+    /* ---------- 8. TAMPILAN PROGRAM KERJA ---------- */
+    // Ubah teks rundown "08.00 - Acara" menjadi daftar timeline
+    function buatRundown(teks) {
+      return (teks || '')
+        .split('\n')
+        .filter((baris) => baris.trim())
+        .map((baris) => {
+          const cocok = baris.match(/^\s*([\d.:]+)\s*[-–]\s*(.*)$/);
+          return cocok
+            ? `<li><b class="mono">${esc(cocok[1])}</b>${esc(cocok[2])}</li>`
+            : `<li>${esc(baris)}</li>`;
+        })
+        .join('');
+    }
+
+    function kartuProker(p, i) {
+      const rundown = buatRundown(p.rundown);
+      const sisaWaktu = p.status === 'Selesai' ? '' : `<em>${hitungMundur(p.tanggal)}</em>`;
+
+      return `
+        <article class="card proker">
+
+          <div class="proker-head">
+            <div>
+              <small>PROGRAM #${i + 1}</small>
+              <h3>${esc(p.judul)}</h3>
+            </div>
+            <span class="chip ${WARNA_STATUS[p.status] || 'chip-gray'}">${esc(p.status)}</span>
+          </div>
+
+          <p class="mut" style="font-size:14px">${esc(p.deskripsi)}</p>
+
+          <div class="tiles">
+            <div>
+              <small>Pelaksanaan</small>
+              <b><i class="fa-regular fa-calendar"></i> ${formatTanggal(p.tanggal)}</b>
+              ${sisaWaktu}
+            </div>
+            <div>
+              <small>Dana masuk</small>
+              <b class="text-green">+ ${rupiah(p.danaMasuk)}</b>
+              <em>${esc(p.ketMasuk || '-')}</em>
+            </div>
+            <div>
+              <small>Dana keluar</small>
+              <b class="text-red">− ${rupiah(p.danaKeluar)}</b>
+              <em>${esc(p.ketKeluar || '-')}</em>
+            </div>
+            <div>
+              <small>Panitia</small>
+              <b>${esc(p.terlibat || '-')}</b>
+            </div>
+          </div>
+
+          ${rundown ? `
+            <small style="font-weight:700; color:var(--mut)">
+              <i class="fa-solid fa-clock-rotate-left"></i> RUNDOWN ACARA
+            </small>
+            <ul class="rundown">${rundown}</ul>` : ''}
+
+        </article>`;
+    }
+
+    function renderProker() {
+      $('#daftar-proker').innerHTML =
+        DATA.proker.map(kartuProker).join('') ||
+        tampilanKosong('flag', 'Belum ada program kerja.');
+    }
+
+
+    /* ---------- 9. ADMIN: LOGIN & PANEL ---------- */
+    function sudahLogin() {
+      try {
+        return sessionStorage.getItem('katar_admin');
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // Tampilkan form login ATAU panel pengurus
+    function renderAdmin() {
+      const login = !!sudahLogin();
+      $('#admin-login').hidden = login;
+      $('#admin-panel').hidden = !login;
+      if (!login) return;
+
+      // [kunci, ikon, judul, deskripsi, jumlah data]
+      const menu = [
+        ['anggota', 'users-gear', 'Kelola Anggota', 'Tambah, ubah jabatan, atau hapus anggota.', DATA.anggota.length + ' anggota'],
+        ['kas', 'wallet', 'Kelola Keuangan Kas', 'Catat uang masuk dan keluar kas RT.', DATA.kas.length + ' transaksi'],
+        ['absen', 'clipboard-user', 'Absensi Anggota', 'Catat kehadiran rapat atau kegiatan rutin.', DATA.absen.length + ' catatan'],
+        ['admin', 'user-shield', 'Akun Admin', 'Lihat atau tambah pengurus yang punya akses.', DATA.admin.length + ' admin'],
+        ['proker', 'diagram-project', 'Program Kerja & Dana Proker', 'Atur proker beserta dana masuk/keluar. Nominal otomatis tercatat di Kas.', DATA.proker.length + ' proker']
+      ];
+      const warnaIkon = ['icon-blue', 'icon-gold', 'icon-green'];
+
+      const kartuMenu = menu.map((m, i) => `
+        <button class="admin-card ${i === 4 ? 'span-all' : ''}" onclick="bukaKelola('${m[0]}')">
+          <span class="stat-icon ${warnaIkon[i % 3]}"><i class="fa-solid fa-${m[1]}"></i></span>
+          <div><b>${m[2]}</b><span>${m[3]}</span></div>
+          <span class="chip chip-gray">${m[4]}</span>
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>`).join('');
+
+      $('#admin-panel').innerHTML = `
+        <div class="admin-banner">
+          <div>
+            <span class="chip" style="background:var(--gold); color:var(--navy)">Mode Pengurus</span>
+            <h2 style="margin-top:8px">Pusat Kendali Pengurus</h2>
+            <p>Kelola anggota, kas, absensi, dan program kerja.</p>
+          </div>
+          <button class="btn btn-ghost" onclick="handleLogout()">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar
+          </button>
+        </div>
+        <div class="grid g2">${kartuMenu}</div>`;
+    }
+
+    function togglePassword() {
+      const input = $('#login-pass');
+      const sedangTersembunyi = input.type === 'password';
+      input.type = sedangTersembunyi ? 'text' : 'password';
+      $('#icon-mata').className = 'fa-solid fa-eye' + (sedangTersembunyi ? '-slash' : '');
+    }
+
+    function handleLogin(event) {
+      event.preventDefault();
+      const username = $('#login-user').value.trim();
+      const password = $('#login-pass').value.trim();
+      const tombol = $('#login-btn');
+
+      tombol.disabled = true;
+      tombol.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memeriksa…';
+
+      setTimeout(() => {
+        const cocok = DATA.admin.some((a) => a.username === username && a.password === password);
+        const akunCadangan = (username === 'bapak_rt' && password === '12345');   // akun bawaan lama
+
+        tombol.disabled = false;
+        tombol.textContent = 'Masuk Sistem';
+
+        if (cocok || akunCadangan) {
+          try { sessionStorage.setItem('katar_admin', '1'); } catch (e) { }
+          $('#login-error').hidden = true;
+          event.target.reset();
+          renderAdmin();
+          toast('Berhasil masuk. Selamat bertugas!');
+        } else {
+          $('#login-error').hidden = false;
+          $('#login-pass').select();
+        }
+      }, 450);
+    }
+
+    function handleLogout() {
+      try { sessionStorage.removeItem('katar_admin'); } catch (e) { }
+      renderAdmin();
+      toast('Anda sudah keluar.');
+    }
+
+
+    /* ---------- 10. KONFIGURASI DATA YANG BISA DIKELOLA ----------
+       Satu pola untuk semua menu admin. Setiap entri berisi:
+         k   = nama data di DATA          t   = judul modal
+         n   = satuan (anggota, dll)      add = teks tombol tambah
+         f   = daftar kolom form: [nama, label, tipe, placeholder, opsional?]
+         w   = kolom yang lebarnya penuh  rev = urutkan terbaru di atas
+         row = cara menampilkan 1 baris data di daftar
+       ------------------------------------------------------------- */
+    const KONFIG = {
+
+      anggota: {
+        t: 'Kelola Anggota', k: 'anggota', n: 'anggota', add: 'Tambah Anggota',
+        def: { status: 'Aktif' },
+        f: [
+          ['nama', 'Nama Lengkap', 'text', 'cth: Rido'],
+          ['jabatan', 'Jabatan / Peran', 'text', 'cth: Ketua / Anggota']
+        ],
+        row: (a) => [a.nama, a.jabatan]
+      },
+
+      kas: {
+        t: 'Kelola Keuangan Kas', k: 'kas', n: 'transaksi', add: 'Catat Transaksi',
+        rev: true, w: ['keterangan'],
+        f: [
+          ['tanggal', 'Tanggal', 'date'],
+          ['jenis', 'Jenis', 'select', ['Masuk', 'Keluar']],
+          ['keterangan', 'Keterangan', 'text', 'cth: Iuran Warga'],
+          ['jumlah', 'Nominal (Rp)', 'number', '100000']
+        ],
+        row: (t) => [
+          t.keterangan,
+          `${formatTanggal(t.tanggal)} · ${t.jenis === 'Masuk' ? '+' : '−'} ${rupiah(t.jumlah)}`
+        ]
+      },
+
+      proker: {
+        t: 'Kelola Program Kerja', k: 'proker', n: 'proker', add: 'Tambah Proker',
+        w: ['judul', 'deskripsi', 'terlibat', 'rundown'],
+        f: [
+          ['judul', 'Judul Program Kerja', 'text', 'cth: Turnamen Mini Soccer'],
+          ['tanggal', 'Tanggal Dimulai', 'date'],
+          ['status', 'Status', 'select', ['Sedang Berjalan', 'Akan Datang', 'Selesai']],
+          ['deskripsi', 'Deskripsi Singkat', 'area', 'Tujuan kegiatan…'],
+          ['danaMasuk', 'Dana Masuk (Rp)', 'number', '0', true],
+          ['ketMasuk', 'Sumber Dana Masuk', 'text', 'cth: Sponsor', true],
+          ['danaKeluar', 'Dana Keluar (Rp)', 'number', '0', true],
+          ['ketKeluar', 'Keperluan Dana Keluar', 'text', 'cth: Sewa Lapangan', true],
+          ['terlibat', 'Panitia / Orang Terlibat', 'text', 'cth: Rido (Ketua), Rafi'],
+          ['rundown', 'Rundown Acara (satu baris per sesi)', 'area', '08.00 - Pembukaan\n09.00 - Acara Utama']
+        ],
+        row: (p) => [
+          p.judul,
+          `${p.status} · masuk ${rupiah(p.danaMasuk)} · keluar ${rupiah(p.danaKeluar)}`
+        ]
+      },
+
+      admin: {
+        t: 'Akun Admin', k: 'admin', n: 'admin', add: 'Tambah Admin',
+        f: [
+          ['nama', 'Nama Pengurus', 'text', 'cth: Bapak RT'],
+          ['username', 'Username', 'text', 'bapak_rt'],
+          ['password', 'Password', 'text', 'kata sandi']
+        ],
+        row: (a) => [a.nama, '@' + a.username + ' · password ••••••']
+      },
+
+      absen: {
+        t: 'Absensi Anggota', k: 'absen', n: 'catatan', add: 'Catat Absensi',
+        rev: true, w: ['keterangan'],
+        f: [
+          ['nama', 'Nama Anggota', 'select', () => DATA.anggota.map((a) => a.nama)],
+          ['status', 'Kehadiran', 'select', ['Hadir', 'Izin', 'Alpha']],
+          ['keterangan', 'Kegiatan', 'text', 'cth: Rapat Rutin Bulanan'],
+          ['tanggal', 'Tanggal', 'date']
+        ],
+        row: (a) => [`${a.nama} — ${a.status}`, `${a.keterangan} · ${formatTanggal(a.tanggal)}`]
+      }
+    };
+
+
+    /* ---------- 11. MODAL KELOLA DATA ---------- */
+    let menuAktif;          // kunci KONFIG yang sedang dibuka
+    let idDiedit = '';      // kosong = tambah baru, berisi id = sedang mengedit
+    let fokusSebelumnya;    // elemen yang fokus sebelum modal dibuka
+
+    function bukaModal() {
+      fokusSebelumnya = document.activeElement;
+      $('#modal').hidden = false;
+      document.body.style.overflow = 'hidden';
+    }
+
+    function tutupModal() {
+      $('#modal').hidden = true;
+      document.body.style.overflow = '';
+      if (fokusSebelumnya && fokusSebelumnya.focus) fokusSebelumnya.focus();
+    }
+
+    function bukaKelola(kunci) {
+      menuAktif = kunci;
+      bukaModal();
+      tampilkanDaftar();
+    }
+
+    // 11a. Tampilan DAFTAR data
+    function tampilkanDaftar() {
+      const cfg = KONFIG[menuAktif];
+      const data = cfg.rev ? [...DATA[cfg.k]].reverse() : DATA[cfg.k];
+      const adminTerakhir = (menuAktif === 'admin' && DATA.admin.length < 2);
+
+      const baris = data.map((item) => {
+        const [judul, subjudul] = cfg.row(item);
+        const tombolHapus = adminTerakhir
+          ? '<span class="chip chip-gray">Utama</span>'
+          : `<button class="icon-btn danger" onclick="hapusData('${item.id}')" aria-label="Hapus ${esc(judul)}">
+               <i class="fa-solid fa-trash"></i>
+             </button>`;
+
+        return `
+          <li class="row">
+            <div class="row-text">
+              <b>${esc(judul)}</b>
+              <span>${esc(subjudul)}</span>
+            </div>
+            <div class="row-actions">
+              <button class="icon-btn" onclick="tampilkanForm('${item.id}')" aria-label="Ubah ${esc(judul)}">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+              ${tombolHapus}
+            </div>
+          </li>`;
+      }).join('');
+
+      $('#modal-judul').textContent = cfg.t;
+      $('#modal-sub').textContent = `Total ${DATA[cfg.k].length} ${cfg.n}`;
+      $('#modal-isi').innerHTML = `
+        <div class="toolbar">
+          <button class="btn btn-navy" onclick="tampilkanForm()">
+            <i class="fa-solid fa-plus"></i> ${cfg.add}
+          </button>
+        </div>
+        <ul class="list">
+          ${baris || tampilanKosong('inbox', 'Belum ada data. Klik tombol tambah di atas.')}
+        </ul>`;
+    }
+
+    // 11b. Tampilan FORM tambah / ubah
+    function buatKolomForm(cfg, kolom, nilaiAwal) {
+      const [nama, label, tipe, placeholder, opsional] = kolom;
+      const lebarPenuh = !cfg.w || cfg.w.includes(nama);
+      const nilai = esc(nilaiAwal[nama] ?? '');
+      const atribut = `name="${nama}" ${opsional ? '' : 'required'}`;
+      let input;
+
+      if (tipe === 'select') {
+        const pilihan = typeof placeholder === 'function' ? placeholder() : placeholder;
+        const opsi = pilihan.map((p) => `<option${p === nilaiAwal[nama] ? ' selected' : ''}>${esc(p)}</option>`);
+        input = `<select ${atribut}>${opsi.join('')}</select>`;
+      } else if (tipe === 'area') {
+        input = `<textarea ${atribut} rows="3" placeholder="${esc(placeholder)}">${nilai}</textarea>`;
+      } else {
+        const angka = tipe === 'number' ? 'min="0" inputmode="numeric"' : '';
+        input = `<input ${atribut} type="${tipe}" ${angka} placeholder="${esc(placeholder || '')}" value="${nilai}">`;
+      }
+
+      return `
+        <label class="field ${lebarPenuh ? 'wide' : ''}">
+          <span>${label}${opsional ? ' <i class="mut" style="font-weight:500">(opsional)</i>' : ''}</span>
+          ${input}
+        </label>`;
+    }
+
+    function tampilkanForm(id) {
+      const cfg = KONFIG[menuAktif];
+      idDiedit = id || '';
+
+      const nilaiAwal = id
+        ? DATA[cfg.k].find((item) => item.id === id)
+        : { tanggal: hariIni(), jenis: 'Masuk', status: menuAktif === 'proker' ? 'Akan Datang' : 'Hadir' };
+
+      $('#modal-judul').textContent = (id ? 'Ubah — ' : 'Baru — ') + cfg.t;
+      $('#modal-sub').textContent = 'Isi data lalu tekan Simpan';
+      $('#modal-isi').innerHTML = `
+        <form class="form" onsubmit="simpanData(event)">
+          ${cfg.f.map((kolom) => buatKolomForm(cfg, kolom, nilaiAwal)).join('')}
+          <div class="form-actions">
+            <button type="button" class="btn btn-outline" onclick="tampilkanDaftar()">Batal</button>
+            <button class="btn btn-navy"><i class="fa-solid fa-check"></i> Simpan</button>
+          </div>
+        </form>`;
+
+      const pertama = $('#modal-isi input, #modal-isi select');
+      if (pertama) pertama.focus();
+    }
+
+    // 11c. SIMPAN & HAPUS
+    // Simpan ke browser lalu gambar ulang semua tampilan
+    function simpanDanRender() {
+      simpanKeBrowser();
+      renderSemua();
+    }
+
+    // Dana masuk/keluar proker otomatis dicatat ke Kas (dan diperbarui kalau proker diedit)
+    function sinkronKasProker(p) {
+      DATA.kas = DATA.kas.filter((t) => t.prokerId !== p.id);
+
+      if (p.danaMasuk > 0) {
+        DATA.kas.push({
+          id: buatId(), tanggal: p.tanggal, jenis: 'Masuk', jumlah: p.danaMasuk, prokerId: p.id,
+          keterangan: `Proker (${p.judul}): ${p.ketMasuk || 'Dana Masuk Proker'}`
+        });
+      }
+      if (p.danaKeluar > 0) {
+        DATA.kas.push({
+          id: buatId(), tanggal: p.tanggal, jenis: 'Keluar', jumlah: p.danaKeluar, prokerId: p.id,
+          keterangan: `Proker (${p.judul}): ${p.ketKeluar || 'Biaya Proker'}`
+        });
+      }
+    }
+
+    function simpanData(event) {
+      event.preventDefault();
+      const cfg = KONFIG[menuAktif];
+      const isian = {};
+
+      cfg.f.forEach(([nama, , tipe]) => {
+        const nilai = event.target.elements[nama].value.trim();
+        isian[nama] = tipe === 'number' ? (+nilai || 0) : nilai;
+      });
+
+      // Username admin tidak boleh kembar
+      if (menuAktif === 'admin' && DATA.admin.some((a) => a.username === isian.username && a.id !== idDiedit)) {
+        toast('Username sudah dipakai.', true);
+        return;
+      }
+
+      let item;
+      if (idDiedit) {
+        item = DATA[cfg.k].find((x) => x.id === idDiedit);
+        Object.assign(item, isian);
+      } else {
+        item = { id: buatId(), ...(cfg.def || {}), ...isian };
+        DATA[cfg.k].push(item);
+      }
+
+      if (menuAktif === 'proker') sinkronKasProker(item);
+
+      simpanDanRender();
+      tampilkanDaftar();
+      toast(menuAktif === 'proker' ? 'Proker tersimpan & kas ikut diperbarui.' : 'Data berhasil disimpan.');
+    }
+
+    async function hapusData(id) {
+      const cfg = KONFIG[menuAktif];
+      const item = DATA[cfg.k].find((x) => x.id === id);
+      const nama = cfg.row(item)[0];
+      const catatan = menuAktif === 'proker' ? ' Catatan kas dari proker ini juga akan dihapus.' : '';
+
+      const yakin = await tanyaKonfirmasi(`Hapus "${nama}"?${catatan}`);
+      if (!yakin) return;
+
+      DATA[cfg.k] = DATA[cfg.k].filter((x) => x.id !== id);
+      if (menuAktif === 'proker') DATA.kas = DATA.kas.filter((t) => t.prokerId !== id);
+
+      simpanDanRender();
+      tampilkanDaftar();
+      toast('Data dihapus.');
+    }
+
+
+    /* ---------- 12. DIALOG KONFIRMASI & NOTIFIKASI ---------- */
+    let tutupKonfirmasi;   // fungsi penutup dialog yang sedang terbuka
+
+    // Mengembalikan true (Ya) atau false (Batal)
+    function tanyaKonfirmasi(pesan) {
+      return new Promise((selesai) => {
+        $('#konfirmasi-teks').textContent = pesan;
+        $('#konfirmasi').hidden = false;
+        $('#konfirmasi-batal').focus();
+
+        tutupKonfirmasi = (jawaban) => {
+          $('#konfirmasi').hidden = true;
+          tutupKonfirmasi = null;
+          selesai(jawaban);
+        };
+        $('#konfirmasi-ya').onclick = () => tutupKonfirmasi(true);
+        $('#konfirmasi-batal').onclick = () => tutupKonfirmasi(false);
+      });
+    }
+
+    function toast(pesan, galat) {
+      const el = document.createElement('div');
+      el.className = 'toast' + (galat ? ' error-toast' : '');
+      el.textContent = pesan;
+      $('#toasts').append(el);
+      setTimeout(() => el.remove(), 3000);
+    }
+
+    // Tombol Esc: tutup dialog konfirmasi dulu, baru modal
+    addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      if (tutupKonfirmasi) tutupKonfirmasi(false);
+      else if (!$('#modal').hidden) tutupModal();
+    });
+
+
+    /* ---------- 13. MULAI APLIKASI ---------- */
+    function renderSemua() {
+      renderBeranda();
+      renderAnggota();
+      renderKas();
+      renderProker();
+      renderAdmin();
+    }
+
+    renderSemua();
+    go(location.hash.slice(1) || 'dashboard');
+  </script>
+
+</body>
+</html>
