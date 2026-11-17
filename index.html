@@ -459,7 +459,8 @@
         <form onsubmit="handleLogin(event)">
           <label class="field">
             <span>Username Admin</span>
-            <input id="login-user" type="text" autocomplete="username" placeholder="Contoh: admin" required>
+            <!-- DIUBAH MENJADI type="text" AGAR TIDAK MEMAKSA ADA KARAKTER '@' -->
+            <input id="login-user" type="text" autocomplete="username" placeholder="Contoh: rafi" required>
           </label>
           <label class="field">
             <span>Password</span>
@@ -549,7 +550,6 @@
     async function renderAdmin(){const{data:{user}}=await db.auth.getUser();const isAdmin=user?await cekAdmin():false;$('#admin-login').hidden=isAdmin;$('#admin-panel').hidden=!isAdmin;if(!isAdmin)return;const menus=[['anggota','users-gear','Kelola Anggota','Tambah, ubah jabatan, atau hapus anggota.',DATA.anggota.length+' anggota'],['kas','wallet','Kelola Keuangan Kas','Catat uang masuk dan keluar kas RT.',DATA.kas.length+' transaksi'],['absen','clipboard-user','Absensi Anggota','Catat kehadiran rapat atau kegiatan rutin.',DATA.absen.length+' catatan'],['proker','diagram-project','Program Kerja','Atur proker dan informasi dana.',DATA.proker.length+' proker']];$('#admin-panel').innerHTML=`<div class="admin-banner"><div><span class="chip" style="background:var(--gold);color:var(--navy)">Mode Pengurus</span><h2 style="margin-top:8px">Pusat Kendali Pengurus</h2><p>Login sebagai ${esc(user.email.split('@')[0])}. Kelola data Karang Taruna.</p></div><button class="btn btn-ghost" onclick="handleLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</button></div><div class="grid g2">${menus.map((m,i)=>`<button class="admin-card ${i===3?'span-all':''}" onclick="bukaKelola('${m[0]}')"><span class="stat-icon ${['icon-blue','icon-gold','icon-green'][i%3]}"><i class="fa-solid fa-${m[1]}"></i></span><div><b>${m[2]}</b><span>${m[3]}</span></div><span class="chip chip-gray">${m[4]}</span><i class="fa-solid fa-chevron-right"></i></button>`).join('')}</div>`;}
     function togglePassword(){const i=$('#login-pass'),hidden=i.type==='password';i.type=hidden?'text':'password';$('#icon-mata').className='fa-solid fa-eye'+(hidden?'-slash':'');}
     
-    // LOGIN MENGGUNAKAN USERNAME (Otomatis ditambahkan domain di belakangnya)
     async function handleLogin(e){
       e.preventDefault();
       const btn=$('#login-btn');
