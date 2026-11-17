@@ -459,7 +459,6 @@
         <form onsubmit="handleLogin(event)">
           <label class="field">
             <span>Username Admin</span>
-            <!-- DIUBAH MENJADI type="text" AGAR TIDAK MEMAKSA ADA KARAKTER '@' -->
             <input id="login-user" type="text" autocomplete="username" placeholder="Contoh: rafi" required>
           </label>
           <label class="field">
@@ -522,6 +521,7 @@
     let DATA = { anggota: [], kas: [], proker: [], absen: [], admin: [] };
     let filterKas = 'Semua', menuAktif = '', idDiedit = '', fokusSebelumnya = null;
     let tutupKonfirmasi = null;
+    let currentAdmin = null;
 
     function esc(v) { const m={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}; return String(v ?? '').replace(/[&<>"']/g,c=>m[c]); }
     function rupiah(v) { return new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(Number(v)||0); }
@@ -546,8 +546,15 @@
     function kartuProker(p,i){const r=buatRundown(p.rundown),remaining=p.status==='Selesai'?'':`<em>${hitungMundur(p.tanggal)}</em>`;return `<article class="card proker"><div class="proker-head"><div><small>PROGRAM #${i+1}</small><h3>${esc(p.judul)}</h3></div><span class="chip ${WARNA_STATUS[p.status]||'chip-gray'}">${esc(p.status)}</span></div><p class="mut" style="font-size:14px">${esc(p.deskripsi)}</p><div class="tiles"><div><small>Pelaksanaan</small><b><i class="fa-regular fa-calendar"></i> ${formatTanggal(p.tanggal)}</b>${remaining}</div><div><small>Dana masuk</small><b class="text-green">+ ${rupiah(p.dana_masuk)}</b><em>${esc(p.ket_masuk||'-')}</em></div><div><small>Dana keluar</small><b class="text-red">− ${rupiah(p.dana_keluar)}</b><em>${esc(p.ket_keluar||'-')}</em></div><div><small>Panitia</small><b>${esc(p.terlibat||'-')}</b></div></div>${r?`<small style="font-weight:700;color:var(--mut)"><i class="fa-solid fa-clock-rotate-left"></i> RUNDOWN ACARA</small><ul class="rundown">${r}</ul>`:''}</article>`;}
     function renderProker(){$('#daftar-proker').innerHTML=DATA.proker.map(kartuProker).join('')||tampilanKosong('flag','Belum ada program kerja.');}
 
-    async function cekAdmin(){const{data:{user}}=await db.auth.getUser();if(!user)return false;const{data,error}=await db.from('admin_users').select('user_id,nama').eq('user_id',user.id).maybeSingle();if(error){console.error(error);return false;}return !!data;}
-    async function renderAdmin(){const{data:{user}}=await db.auth.getUser();const isAdmin=user?await cekAdmin():false;$('#admin-login').hidden=isAdmin;$('#admin-panel').hidden=!isAdmin;if(!isAdmin)return;const menus=[['anggota','users-gear','Kelola Anggota','Tambah, ubah jabatan, atau hapus anggota.',DATA.anggota.length+' anggota'],['kas','wallet','Kelola Keuangan Kas','Catat uang masuk dan keluar kas RT.',DATA.kas.length+' transaksi'],['absen','clipboard-user','Absensi Anggota','Catat kehadiran rapat atau kegiatan rutin.',DATA.absen.length+' catatan'],['proker','diagram-project','Program Kerja','Atur proker dan informasi dana.',DATA.proker.length+' proker']];$('#admin-panel').innerHTML=`<div class="admin-banner"><div><span class="chip" style="background:var(--gold);color:var(--navy)">Mode Pengurus</span><h2 style="margin-top:8px">Pusat Kendali Pengurus</h2><p>Login sebagai ${esc(user.email.split('@')[0])}. Kelola data Karang Taruna.</p></div><button class="btn btn-ghost" onclick="handleLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</button></div><div class="grid g2">${menus.map((m,i)=>`<button class="admin-card ${i===3?'span-all':''}" onclick="bukaKelola('${m[0]}')"><span class="stat-icon ${['icon-blue','icon-gold','icon-green'][i%3]}"><i class="fa-solid fa-${m[1]}"></i></span><div><b>${m[2]}</b><span>${m[3]}</span></div><span class="chip chip-gray">${m[4]}</span><i class="fa-solid fa-chevron-right"></i></button>`).join('')}</div>`;}
+    function renderAdmin(){
+      const isAdmin = !!currentAdmin;
+      $('#admin-login').hidden = isAdmin;
+      $('#admin-panel').hidden = !isAdmin;
+      if(!isAdmin) return;
+      const menus=[['anggota','users-gear','Kelola Anggota','Tambah, ubah jabatan, atau hapus anggota.',DATA.anggota.length+' anggota'],['kas','wallet','Kelola Keuangan Kas','Catat uang masuk dan keluar kas RT.',DATA.kas.length+' transaksi'],['absen','clipboard-user','Absensi Anggota','Catat kehadiran rapat atau kegiatan rutin.',DATA.absen.length+' catatan'],['proker','diagram-project','Program Kerja','Atur proker dan informasi dana.',DATA.proker.length+' proker']];
+      $('#admin-panel').innerHTML=`<div class="admin-banner"><div><span class="chip" style="background:var(--gold);color:var(--navy)">Mode Pengurus</span><h2 style="margin-top:8px">Pusat Kendali Pengurus</h2><p>Login sebagai ${esc(currentAdmin.nama)} (@${esc(currentAdmin.username)}).</p></div><button class="btn btn-ghost" onclick="handleLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</button></div><div class="grid g2">${menus.map((m,i)=>`<button class="admin-card ${i===3?'span-all':''}" onclick="bukaKelola('${m[0]}')"><span class="stat-icon ${['icon-blue','icon-gold','icon-green'][i%3]}"><i class="fa-solid fa-${m[1]}"></i></span><div><b>${m[2]}</b><span>${m[3]}</span></div><span class="chip chip-gray">${m[4]}</span><i class="fa-solid fa-chevron-right"></i></button>`).join('')}</div>`;
+    }
+
     function togglePassword(){const i=$('#login-pass'),hidden=i.type==='password';i.type=hidden?'text':'password';$('#icon-mata').className='fa-solid fa-eye'+(hidden?'-slash':'');}
     
     async function handleLogin(e){
@@ -557,14 +564,14 @@
       btn.textContent='Memeriksa…';
       $('#login-error').hidden=true;
       try{
-        const userInput = $('#login-user').value.trim();
-        const emailPseudo = userInput.includes('@') ? userInput : `${userInput}@katar13.local`;
-        const password = $('#login-pass').value;
+        const user = $('#login-user').value.trim();
+        const pass = $('#login-pass').value;
 
-        const{data,error}=await db.auth.signInWithPassword({email: emailPseudo, password: password});
-        if(error)throw error;
-        const ok=await cekAdmin();
-        if(!ok){await db.auth.signOut();throw new Error('Username atau password salah, atau akun belum diberi akses admin.');}
+        const {data, error} = await db.from('admin_users').select('*').eq('username', user).eq('password', pass).maybeSingle();
+        if(error) throw error;
+        if(!data) throw new Error('Username atau password salah.');
+
+        currentAdmin = data;
         e.target.reset();
         await muatData();
         renderAdmin();
@@ -578,7 +585,11 @@
       }
     }
 
-    async function handleLogout(){await db.auth.signOut();renderAdmin();toast('Anda sudah keluar.');}
+    function handleLogout(){
+      currentAdmin = null;
+      renderAdmin();
+      toast('Anda sudah keluar.');
+    }
 
     const KONFIG={
       anggota:{t:'Kelola Anggota',table:'anggota',n:'anggota',add:'Tambah Anggota',fields:[['nama','Nama Lengkap','text'],['jabatan','Jabatan / Peran','text'],['status','Status','select',['Aktif','Tidak Aktif']]],row:x=>[x.nama,x.jabatan+' · '+x.status]},
@@ -595,11 +606,10 @@
     async function sinkronKasProker(p){const id=p.id;const del=await db.from('kas').delete().eq('proker_id',id);if(del.error)throw del.error;const rows=[];if(Number(p.dana_masuk)>0)rows.push({tanggal:p.tanggal,jenis:'Masuk',jumlah:p.dana_masuk,proker_id:id,keterangan:`Proker (${p.judul}): ${p.ket_masuk||'Dana Masuk Proker'}`});if(Number(p.dana_keluar)>0)rows.push({tanggal:p.tanggal,jenis:'Keluar',jumlah:p.dana_keluar,proker_id:id,keterangan:`Proker (${p.judul}): ${p.ket_keluar||'Biaya Proker'}`});if(rows.length){const ins=await db.from('kas').insert(rows);if(ins.error)throw ins.error;}}
     async function hapusData(id){const yes=await tanyaKonfirmasi('Yakin ingin menghapus data ini?');if(!yes)return;const c=KONFIG[menuAktif];try{if(menuAktif==='proker'){const d=await db.from('kas').delete().eq('proker_id',id);if(d.error)throw d.error;}const r=await db.from(c.table).delete().eq('id',id);if(r.error)throw r.error;await muatData();await tampilkanDaftar();toast('Data dihapus.');}catch(err){toast('Gagal menghapus: '+err.message,true);}}
     function tanyaKonfirmasi(msg){return new Promise(resolve=>{$('#konfirmasi-teks').textContent=msg;$('#konfirmasi').hidden=false;tutupKonfirmasi=v=>{$('#konfirmasi').hidden=true;tutupKonfirmasi=null;resolve(v)};$('#konfirmasi-ya').onclick=()=>tutupKonfirmasi(true);$('#konfirmasi-batal').onclick=()=>tutupKonfirmasi(false);});}
-    async function muatData(){const tables=['anggota','kas','proker'];const results=await Promise.all(tables.map(t=>db.from(t).select('*').order('created_at',{ascending:false})));for(let i=0;i<tables.length;i++){if(results[i].error)throw results[i].error;DATA[tables[i]]=results[i].data||[];}DATA.absen=await cekAdmin()?((await db.from('absen').select('*').order('created_at',{ascending:false})).data||[]):[];renderSemua();}
+    async function muatData(){const tables=['anggota','kas','proker','absen'];const results=await Promise.all(tables.map(t=>db.from(t).select('*').order('created_at',{ascending:false})));for(let i=0;i<tables.length;i++){if(results[i].error)throw results[i].error;DATA[tables[i]]=results[i].data||[];}renderSemua();}
     function renderSemua(){renderBeranda();renderAnggota();renderKas();renderProker();}
     addEventListener('keydown',e=>{if(e.key==='Escape'){if(tutupKonfirmasi)tutupKonfirmasi(false);else if(!$('#modal').hidden)tutupModal();}});
-    async function mulai(){try{if(SUPABASE_URL.includes('xxxxxx')||SUPABASE_ANON_KEY.includes('sb_publishable_...')){toast('Isi SUPABASE_URL dan SUPABASE_ANON_KEY di bagian bawah file HTML.',true);return;}await muatData();await renderAdmin();go(location.hash.slice(1)||'dashboard');}catch(e){console.error(e);toast('Gagal memuat database: '+e.message,true);}}
-    db.auth.onAuthStateChange(()=>{renderAdmin();});
+    async function mulai(){try{if(SUPABASE_URL.includes('xxxxxx')||SUPABASE_ANON_KEY.includes('sb_publishable_...')){toast('Isi SUPABASE_URL dan SUPABASE_ANON_KEY di bagian bawah file HTML.',true);return;}await muatData();renderAdmin();go(location.hash.slice(1)||'dashboard');}catch(e){console.error(e);toast('Gagal memuat database: '+e.message,true);}}
     mulai();
   </script>
 
