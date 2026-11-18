@@ -657,7 +657,7 @@
           ['dana_keluar','Dana Keluar (Rp)','number',false],
           ['ket_keluar','Keperluan Dana Keluar','text',false],
           ['terlibat','Panitia / Orang Terlibat','text',false],
-          ['link_drive','Link Drive Dokumentasi','text',false], // Kolom link drive (bebas diisi/kosong)
+          ['link_drive','Link Drive Dokumentasi','text',false], // Kolom link drive
           ['rundown','Rundown Acara','area',false]
         ],
         row:x=>[x.judul,`${x.status} · masuk ${rupiah(x.dana_masuk)} · keluar ${rupiah(x.dana_keluar)}`]
@@ -681,7 +681,7 @@
       const[n,label,type,opts,isRequired]=f;
       let input='';
       const val=esc(v[n]??'');
-      const reqAttr=isRequired?'required':''; // Hanya wajib jika true
+      const reqAttr=isRequired?'required':'';
       if(type==='select'){
         const a=typeof opts==='function'?opts():opts;
         input=`<select name="${n}" ${reqAttr}>${a.map(x=>`<option ${x===v[n]?'selected':''}>${esc(x)}</option>`).join('')}</select>`;
@@ -694,11 +694,12 @@
     }
     
     function tampilkanForm(id){
-      const c=KONFIG[menuAktif];idDiedit=id||'';
-      const current=id?DATA[c.table].find(x=>x.id===id):{tanggal:hariIni(),jenis:'Masuk',status:menuAktif==='proker'?'Akan Datang':'Hadir',dana_masuk:0,dana_keluar:0};
+      const c=KONFIG[menuAktif];
+      idDiedit=id||''; // Menyimpan ID saat tombol edit ditekan
+      const current=id?DATA[c.table].find(x=>String(x.id)===String(id)):{tanggal:hariIni(),jenis:'Masuk',status:menuAktif==='proker'?'Akan Datang':'Hadir',dana_masuk:0,dana_keluar:0};
       $('#modal-judul').textContent=(id?'Ubah — ':'Baru — ')+c.t;
       $('#modal-sub').textContent='Isi data lalu tekan Simpan';
-      $('#modal-isi').innerHTML=`<form class="form" onsubmit="simpanData(event)">${c.fields.map(f=>buatKolomForm(c,f,current)).join('')}<div class="form-actions"><button type="button" class="btn btn-outline" onclick="tampilkanDaftar()">Batal</button><button class="btn btn-navy"><i class="fa-solid fa-check"></i> Simpan</button></div></form>`;
+      $('#modal-isi').innerHTML=`<form class="form" onsubmit="simpanData(event)">${c.fields.map(f=>buatKolomForm(c,f,current||{})).join('')}<div class="form-actions"><button type="button" class="btn btn-outline" onclick="tampilkanDaftar()">Batal</button><button class="btn btn-navy"><i class="fa-solid fa-check"></i> Simpan</button></div></form>`;
     }
 
     async function simpanData(e){
@@ -710,15 +711,19 @@
       }
       try{
         let result;
-        if(idDiedit) result=await db.from(c.table).update(payload).eq('id',idDiedit);
-        else result=await db.from(c.table).insert(payload);
+        // Memastikan apakah ini proses update (edit) berdasarkan idDiedit atau insert (baru)
+        if(idDiedit){
+          result=await db.from(c.table).update(payload).eq('id',idDiedit);
+        }else{
+          result=await db.from(c.table).insert(payload);
+        }
         if(result.error) throw result.error;
 
         if(menuAktif==='proker'){
           const id=idDiedit||null;
           if(id){
-            const p=DATA.proker.find(x=>x.id===idDiedit);
-            await sinkronKasProker({...p,...payload});
+            const p=DATA.proker.find(x=>String(x.id)===String(idDiedit));
+            if(p) await sinkronKasProker({...p,...payload});
           }else{
             const{data}=await db.from('proker').select('*').order('created_at',{ascending:false}).limit(1).single();
             if(data) await sinkronKasProker(data);
