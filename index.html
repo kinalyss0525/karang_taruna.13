@@ -26,7 +26,7 @@
       --r: 16px;
     }
 
-    * { box-sizing: border-box; margin: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; }
     [hidden] { display: none !important; }
 
     body {
@@ -464,7 +464,7 @@
         <form onsubmit="handleLogin(event)">
           <label class="field">
             <span>Username Admin</span>
-            <input id="login-user" type="text" autocomplete="username" placeholder="Contoh: rafi" required>
+            <input id="login-user" type="text" autocomplete="username" placeholder="Contoh: katar13" required>
           </label>
           <label class="field">
             <span>Password</span>
@@ -523,8 +523,8 @@
     const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const $ = (s) => document.querySelector(s);
-    let DATA = { anggota: [], kas: [], proker: [], absen: [], admin: [] };
-    let filterKas = 'Semua', menuAktif = '', idDiedit = '', fokusSebelumnya = null;
+    let DATA = { anggota: [], kas: [], proker: [], absen: [] };
+    let filterKas = 'Semua', idDiedit = '', menuAktif = '';
     let tutupKonfirmasi = null;
     let currentAdmin = null;
 
@@ -541,14 +541,49 @@
 
     function hitungKas(){let masuk=0,keluar=0;DATA.kas.forEach(t=>{if(t.jenis==='Masuk')masuk+=Number(t.jumlah);else keluar+=Number(t.jumlah)});return{masuk,keluar,saldo:masuk-keluar};}
     function barisTransaksi(t){const masuk=t.jenis==='Masuk';return `<li class="trx"><span class="trx-icon ${masuk?'trx-in':'trx-out'}"><i class="fa-solid fa-arrow-${masuk?'down':'up'}"></i></span><div><b>${esc(t.keterangan)}</b><small>${formatTanggal(t.tanggal)}</small></div><strong class="${masuk?'text-green':'text-red'}">${masuk?'+':'−'} ${rupiah(t.jumlah)}</strong></li>`;}
-    function renderBeranda(){const kas=hitungKas(),aktif=DATA.proker.filter(p=>p.status!=='Selesai'),near=[...aktif].sort((a,b)=>a.tanggal.localeCompare(b.tanggal))[0],recent=[...DATA.kas].sort((a,b)=>b.tanggal.localeCompare(a.tanggal)).slice(0,4);const kegiatan=near?`<span class="chip ${WARNA_STATUS[near.status]||'chip-gray'}">${esc(near.status)}</span><h3 style="margin:8px 0 4px">${esc(near.judul)}</h3><p class="mut" style="font-size:14px"><i class="fa-regular fa-calendar"></i> ${formatTanggal(near.tanggal)} · <b>${hitungMundur(near.tanggal)}</b></p>`:'<p class="mut">Belum ada kegiatan mendatang.</p>';
-      $('#tab-dashboard').innerHTML=`<div class="hero"><span class="chip"><i class="fa-solid fa-bullhorn"></i> Pengumuman RT 13</span><h2>Selamat Datang, Warga Nusa Muda</h2><p>Portal resmi Karang Taruna RT 13: koordinasi kegiatan pemuda, laporan kas yang terbuka, dan pemantauan program kerja bersama.</p><div class="hero-actions"><button class="btn btn-gold" onclick="go('proker')"><i class="fa-solid fa-flag-checkered"></i> Lihat Program Kerja</button><button class="btn btn-ghost" onclick="go('kas')"><i class="fa-solid fa-wallet"></i> Cek Kas</button></div><div class="hero-meta"><span><i class="fa-solid fa-location-dot"></i> Jakarta Utara</span><span><i class="fa-solid fa-circle-check" style="color:#6EE7A8"></i> Kepengurusan Aktif</span></div></div><div class="grid g3" style="margin:14px 0"><button class="card stat" onclick="go('anggota')"><span class="stat-icon icon-blue"><i class="fa-solid fa-users"></i></span><div><small>Anggota Terdaftar</small><strong>${DATA.anggota.length} orang</strong></div></button><button class="card stat" onclick="go('kas')"><span class="stat-icon icon-gold"><i class="fa-solid fa-sack-dollar"></i></span><div><small>Saldo Kas</small><strong>${rupiah(kas.saldo)}</strong></div></button><button class="card stat" onclick="go('proker')"><span class="stat-icon icon-green"><i class="fa-solid fa-flag-checkered"></i></span><div><small>Proker Aktif</small><strong>${aktif.length} kegiatan</strong></div></button></div><div class="grid g2"><div class="card"><div class="section-head"><h3>Kegiatan Terdekat</h3><a onclick="go('proker')">Semua</a></div>${kegiatan}</div><div class="card"><div class="section-head"><h3>Transaksi Terbaru</h3><a onclick="go('kas')">Semua</a></div><ul class="list">${recent.map(barisTransaksi).join('')||'<p class="mut">Belum ada transaksi.</p>'}</ul></div></div>`;}
+    
+    function renderBeranda(){
+      const kas=hitungKas(),aktif=DATA.proker.filter(p=>p.status!=='Selesai'),near=[...aktif].sort((a,b)=>a.tanggal.localeCompare(b.tanggal))[0];
+      const recent=[...DATA.kas].sort((a,b)=>b.tanggal.localeCompare(a.tanggal)).slice(0,4);
+      const kegiatan=near?`<span class="chip ${WARNA_STATUS[near.status]||'chip-gray'}">${esc(near.status)}</span><h3 style="margin:8px 0 4px">${esc(near.judul)}</h3><p class="mut" style="font-size:14px"><i class="fa-regular fa-calendar"></i> ${formatTanggal(near.tanggal)} · <b>${hitungMundur(near.tanggal)}</b></p>`:'<p class="mut">Belum ada kegiatan mendatang.</p>';
+      
+      $('#tab-dashboard').innerHTML=`
+        <div class="hero">
+          <span class="chip"><i class="fa-solid fa-bullhorn"></i> Pengumuman RT 13</span>
+          <h2>Selamat Datang, Warga Nusa Muda</h2>
+          <p>Portal resmi Karang Taruna RT 13: koordinasi kegiatan pemuda, laporan kas yang terbuka, dan pemantauan program kerja bersama.</p>
+          <div class="hero-actions">
+            <button class="btn btn-gold" onclick="go('proker')"><i class="fa-solid fa-flag-checkered"></i> Lihat Program Kerja</button>
+            <button class="btn btn-ghost" onclick="go('kas')"><i class="fa-solid fa-wallet"></i> Cek Kas</button>
+          </div>
+          <div class="hero-meta">
+            <span><i class="fa-solid fa-location-dot"></i> Jakarta Utara</span>
+            <span><i class="fa-solid fa-circle-check" style="color:#6EE7A8"></i> Kepengurusan Aktif</span>
+          </div>
+        </div>
+        <div class="grid g3" style="margin:14px 0">
+          <button class="card stat" onclick="go('anggota')"><span class="stat-icon icon-blue"><i class="fa-solid fa-users"></i></span><div><small>Anggota Terdaftar</small><strong>${DATA.anggota.length} orang</strong></div></button>
+          <button class="card stat" onclick="go('kas')"><span class="stat-icon icon-gold"><i class="fa-solid fa-sack-dollar"></i></span><div><small>Saldo Kas</small><strong>${rupiah(kas.saldo)}</strong></div></button>
+          <button class="card stat" onclick="go('proker')"><span class="stat-icon icon-green"><i class="fa-solid fa-flag-checkered"></i></span><div><small>Proker Aktif</small><strong>${aktif.length} kegiatan</strong></div></button>
+        </div>
+        <div class="grid g2">
+          <div class="card"><div class="section-head"><h3>Kegiatan Terdekat</h3><a onclick="go('proker')">Semua</a></div>${kegiatan}</div>
+          <div class="card"><div class="section-head"><h3>Transaksi Terbaru</h3><a onclick="go('kas')">Semua</a></div><ul class="list">${recent.map(barisTransaksi).join('')||'<p class="mut">Belum ada transaksi.</p>'}</ul></div>
+        </div>`;
+    }
+
     function kartuAnggota(a,i){const initials=(a.nama||'').trim().slice(0,2).toUpperCase();return `<div class="member"><div class="avatar av${i%4}">${esc(initials)}</div><div class="member-info"><b>${esc(a.nama)}</b><span>${a.jabatan==='Ketua'?'<i class="fa-solid fa-crown"></i> ':''}${esc(a.jabatan)}</span></div><span class="chip ${a.status==='Aktif'?'chip-ok':'chip-gray'}">${esc(a.status)}</span></div>`;}
     function renderAnggota(){const q=($('#cari-anggota').value||'').toLowerCase();const list=DATA.anggota.filter(a=>(a.nama+' '+a.jabatan).toLowerCase().includes(q));$('#jumlah-anggota').textContent=`Menampilkan ${list.length} dari ${DATA.anggota.length} anggota`;$('#daftar-anggota').innerHTML=list.map(kartuAnggota).join('')||tampilanKosong('user-slash','Belum ada data anggota.');}
     function setFilterKas(v){filterKas=v;renderKas();}
     function renderKas(){const x=hitungKas();$('#kas-saldo').textContent=rupiah(x.saldo);$('#kas-masuk').textContent=rupiah(x.masuk);$('#kas-keluar').textContent=rupiah(x.keluar);document.querySelectorAll('.filter-btn').forEach(b=>b.classList.toggle('on',b.dataset.filter===filterKas));const list=[...DATA.kas].filter(t=>filterKas==='Semua'||t.jenis===filterKas).sort((a,b)=>b.tanggal.localeCompare(a.tanggal));$('#daftar-kas').innerHTML=list.map(barisTransaksi).join('')||tampilanKosong('receipt','Belum ada transaksi.');}
     function buatRundown(s){return(s||'').split('\n').filter(x=>x.trim()).map(line=>{const m=line.match(/^\s*([\d.:]+)\s*[-–]\s*(.*)$/);return m?`<li><b class="mono">${esc(m[1])}</b>${esc(m[2])}</li>`:`<li>${esc(line)}</li>`}).join('');}
-    function kartuProker(p,i){const r=buatRundown(p.rundown),remaining=p.status==='Selesai'?'':`<em>${hitungMundur(p.tanggal)}</em>`;return `<article class="card proker"><div class="proker-head"><div><small>PROGRAM #${i+1}</small><h3>${esc(p.judul)}</h3></div><span class="chip ${WARNA_STATUS[p.status]||'chip-gray'}">${esc(p.status)}</span></div><p class="mut" style="font-size:14px">${esc(p.deskripsi)}</p><div class="tiles"><div><small>Pelaksanaan</small><b><i class="fa-regular fa-calendar"></i> ${formatTanggal(p.tanggal)}</b>${remaining}</div><div><small>Dana masuk</small><b class="text-green">+ ${rupiah(p.dana_masuk)}</b><em>${esc(p.ket_masuk||'-')}</em></div><div><small>Dana keluar</small><b class="text-red">− ${rupiah(p.dana_keluar)}</b><em>${esc(p.ket_keluar||'-')}</em></div><div><small>Panitia</small><b>${esc(p.terlibat||'-')}</b></div></div>${r?`<small style="font-weight:700;color:var(--mut)"><i class="fa-solid fa-clock-rotate-left"></i> RUNDOWN ACARA</small><ul class="rundown">${r}</ul>`:''}</article>`;}
+    
+    function kartuProker(p,i){
+      const r=buatRundown(p.rundown),remaining=p.status==='Selesai'?'':`<em>${hitungMundur(p.tanggal)}</em>`;
+      const linkDriveBtn = p.link_drive ? `<a href="${esc(p.link_drive)}" target="_blank" class="btn btn-outline" style="margin-top:10px; display:inline-flex; width:100%; font-size:13px;"><i class="fa-brands fa-google-drive"></i> Lihat Dokumentasi Drive</a>` : '';
+      return `<article class="card proker"><div class="proker-head"><div><small>PROGRAM #${i+1}</small><h3>${esc(p.judul)}</h3></div><span class="chip ${WARNA_STATUS[p.status]||'chip-gray'}">${esc(p.status)}</span></div><p class="mut" style="font-size:14px">${esc(p.deskripsi)}</p><div class="tiles"><div><small>Pelaksanaan</small><b><i class="fa-regular fa-calendar"></i> ${formatTanggal(p.tanggal)}</b>${remaining}</div><div><small>Dana masuk</small><b class="text-green">+ ${rupiah(p.dana_masuk)}</b><em>${esc(p.ket_masuk||'-')}</em></div><div><small>Dana keluar</small><b class="text-red">− ${rupiah(p.dana_keluar)}</b><em>${esc(p.ket_keluar||'-')}</em></div><div><small>Panitia</small><b>${esc(p.terlibat||'-')}</b></div></div>${r?`<small style="font-weight:700;color:var(--mut)"><i class="fa-solid fa-clock-rotate-left"></i> RUNDOWN ACARA</small><ul class="rundown">${r}</ul>`:''}${linkDriveBtn}</article>`;
+    }
+    
     function renderProker(){$('#daftar-proker').innerHTML=DATA.proker.map(kartuProker).join('')||tampilanKosong('flag','Belum ada program kerja.');}
 
     function renderAdmin(){
@@ -556,8 +591,18 @@
       $('#admin-login').hidden = isAdmin;
       $('#admin-panel').hidden = !isAdmin;
       if(!isAdmin) return;
-      const menus=[['anggota','users-gear','Kelola Anggota','Tambah, ubah jabatan, atau hapus anggota.',DATA.anggota.length+' anggota'],['kas','wallet','Kelola Keuangan Kas','Catat uang masuk dan keluar kas RT.',DATA.kas.length+' transaksi'],['absen','clipboard-user','Absensi Anggota','Catat kehadiran rapat atau kegiatan rutin.',DATA.absen.length+' catatan'],['proker','diagram-project','Program Kerja','Atur proker dan informasi dana.',DATA.proker.length+' proker']];
-      $('#admin-panel').innerHTML=`<div class="admin-banner"><div><span class="chip" style="background:var(--gold);color:var(--navy)">Mode Pengurus</span><h2 style="margin-top:8px">Pusat Kendali Pengurus</h2><p>Login sebagai ${esc(currentAdmin.nama)} (@${esc(currentAdmin.username)}).</p></div><button class="btn btn-ghost" onclick="handleLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</button></div><div class="grid g2">${menus.map((m,i)=>`<button class="admin-card ${i===3?'span-all':''}" onclick="bukaKelola('${m[0]}')"><span class="stat-icon ${['icon-blue','icon-gold','icon-green'][i%3]}"><i class="fa-solid fa-${m[1]}"></i></span><div><b>${m[2]}</b><span>${m[3]}</span></div><span class="chip chip-gray">${m[4]}</span><i class="fa-solid fa-chevron-right"></i></button>`).join('')}</div>`;
+      const menus=[
+        ['anggota','users-gear','Kelola Anggota','Tambah, ubah jabatan, atau hapus anggota.',DATA.anggota.length+' anggota'],
+        ['kas','wallet','Kelola Keuangan Kas','Catat uang masuk dan keluar kas RT.',DATA.kas.length+' transaksi'],
+        ['absen','clipboard-user','Absensi Anggota','Catat kehadiran rapat atau kegiatan rutin.',DATA.absen.length+' catatan'],
+        ['proker','diagram-project','Program Kerja','Atur proker dan informasi dana.',DATA.proker.length+' proker']
+      ];
+      $('#admin-panel').innerHTML=`
+        <div class="admin-banner">
+          <div><span class="chip" style="background:var(--gold);color:var(--navy)">Mode Pengurus</span><h2 style="margin-top:8px">Pusat Kendali Pengurus</h2><p>Login sebagai ${esc(currentAdmin.nama || currentAdmin.username)}.</p></div>
+          <button class="btn btn-ghost" onclick="handleLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</button>
+        </div>
+        <div class="grid g2">${menus.map((m,i)=>`<button class="admin-card ${i===3?'span-all':''}" onclick="bukaKelola('${m[0]}')"><span class="stat-icon ${['icon-blue','icon-gold','icon-green'][i%3]}"><i class="fa-solid fa-${m[1]}"></i></span><div><b>${m[2]}</b><span>${m[3]}</span></div><span class="chip chip-gray">${m[4]}</span><i class="fa-solid fa-chevron-right"></i></button>`).join('')}</div>`;
     }
 
     function togglePassword(){const i=$('#login-pass'),hidden=i.type==='password';i.type=hidden?'text':'password';$('#icon-mata').className='fa-solid fa-eye'+(hidden?'-slash':'');}
@@ -571,11 +616,9 @@
       try{
         const user = $('#login-user').value.trim();
         const pass = $('#login-pass').value;
-
         const {data, error} = await db.from('admin_users').select('*').eq('username', user).eq('password', pass).maybeSingle();
         if(error) throw error;
         if(!data) throw new Error('Username atau password salah.');
-
         currentAdmin = data;
         e.target.reset();
         await muatData();
@@ -597,24 +640,169 @@
     }
 
     const KONFIG={
-      anggota:{t:'Kelola Anggota',table:'anggota',n:'anggota',add:'Tambah Anggota',fields:[['nama','Nama Lengkap','text'],['jabatan','Jabatan / Peran','text'],['status','Status','select',['Aktif','Tidak Aktif']]],row:x=>[x.nama,x.jabatan+' · '+x.status]},
-      kas:{t:'Kelola Keuangan Kas',table:'kas',n:'transaksi',add:'Catat Transaksi',rev:true,fields:[['tanggal','Tanggal','date'],['jenis','Jenis','select',['Masuk','Keluar']],['keterangan','Keterangan','text'],['jumlah','Nominal (Rp)','number']],row:x=>[x.keterangan,`${formatTanggal(x.tanggal)} · ${x.jenis==='Masuk'?'+':'−'} ${rupiah(x.jumlah)}`]},
-      proker:{t:'Kelola Program Kerja',table:'proker',n:'program',add:'Tambah Proker',fields:[['judul','Judul Program Kerja','text'],['tanggal','Tanggal Dimulai','date'],['status','Status','select',['Sedang Berjalan','Akan Datang','Selesai']],['deskripsi','Deskripsi Singkat','area'],['dana_masuk','Dana Masuk (Rp)','number'],['ket_masuk','Sumber Dana Masuk','text'],['dana_keluar','Dana Keluar (Rp)','number'],['ket_keluar','Keperluan Dana Keluar','text'],['terlibat','Panitia / Orang Terlibat','text'],['rundown','Rundown Acara','area']],row:x=>[x.judul,`${x.status} · masuk ${rupiah(x.dana_masuk)} · keluar ${rupiah(x.dana_keluar)}`]},
-      absen:{t:'Absensi Anggota',table:'absen',n:'catatan',add:'Catat Absensi',fields:[['nama','Nama Anggota','select',()=>DATA.anggota.map(x=>x.nama)],['status','Kehadiran','select',['Hadir','Izin','Alpha']],['keterangan','Kegiatan','text'],['tanggal','Tanggal','date']],row:x=>[x.nama+' — '+x.status,x.keterangan+' · '+formatTanggal(x.tanggal)]}
+      anggota:{t:'Kelola Anggota',table:'anggota',n:'anggota',add:'Tambah Anggota',fields:[['nama','Nama Lengkap','text',true],['jabatan','Jabatan / Peran','text',true],['status','Status','select',['Aktif','Tidak Aktif'],true]],row:x=>[x.nama,x.jabatan+' · '+x.status]},
+      kas:{t:'Kelola Keuangan Kas',table:'kas',n:'transaksi',add:'Catat Transaksi',rev:true,fields:[['tanggal','Tanggal','date',true],['jenis','Jenis','select',['Masuk','Keluar'],true],['keterangan','Keterangan','text',true],['jumlah','Nominal (Rp)','number',true]],row:x=>[x.keterangan,`${formatTanggal(x.tanggal)} · ${x.jenis==='Masuk'?'+':'−'} ${rupiah(x.jumlah)}`]},
+      proker:{
+        t:'Kelola Program Kerja',
+        table:'proker',
+        n:'program',
+        add:'Tambah Proker',
+        fields:[
+          ['judul','Judul Program Kerja','text',true], // Wajib
+          ['tanggal','Tanggal Dimulai','date',true], // Wajib
+          ['status','Status','select',['Sedang Berjalan','Akan Datang','Selesai'],false],
+          ['deskripsi','Deskripsi Singkat','area',false],
+          ['dana_masuk','Dana Masuk (Rp)','number',false],
+          ['ket_masuk','Sumber Dana Masuk','text',false],
+          ['dana_keluar','Dana Keluar (Rp)','number',false],
+          ['ket_keluar','Keperluan Dana Keluar','text',false],
+          ['terlibat','Panitia / Orang Terlibat','text',false],
+          ['link_drive','Link Drive Dokumentasi','text',false], // Kolom link drive (bebas diisi/kosong)
+          ['rundown','Rundown Acara','area',false]
+        ],
+        row:x=>[x.judul,`${x.status} · masuk ${rupiah(x.dana_masuk)} · keluar ${rupiah(x.dana_keluar)}`]
+      },
+      absen:{t:'Absensi Anggota',table:'absen',n:'catatan',add:'Catat Absensi',fields:[['nama','Nama Anggota','select',()=>DATA.anggota.map(x=>x.nama),true],['status','Kehadiran','select',['Hadir','Izin','Alpha'],true],['keterangan','Kegiatan','text',true],['tanggal','Tanggal','date',true]],row:x=>[x.nama+' — '+x.status,x.keterangan+' · '+formatTanggal(x.tanggal)]}
     };
+    
     async function bukaKelola(k){menuAktif=k;$('#modal').hidden=false;document.body.style.overflow='hidden';await tampilkanDaftar();}
-    function tutupModal(){$('#modal').hidden=true;document.body.style.overflow='';if(fokusSebelumnya?.focus)fokusSebelumnya.focus();}
-    async function tampilkanDaftar(){const c=KONFIG[menuAktif],list=c.rev?[...DATA[c.table]].reverse():DATA[c.table];$('#modal-judul').textContent=c.t;$('#modal-sub').textContent=`Total ${list.length} ${c.n}`;$('#modal-isi').innerHTML=`<div class="toolbar"><button class="btn btn-navy" onclick="tampilkanForm()"><i class="fa-solid fa-plus"></i> ${c.add}</button></div><ul class="list">${list.map(x=>{const[j,s]=c.row(x);return `<li class="row"><div class="row-text"><b>${esc(j)}</b><span>${esc(s)}</span></div><div class="row-actions"><button class="icon-btn" onclick="tampilkanForm('${x.id}')" aria-label="Ubah"><i class="fa-solid fa-pen"></i></button><button class="icon-btn danger" onclick="hapusData('${x.id}')" aria-label="Hapus"><i class="fa-solid fa-trash"></i></button></div></li>`}).join('')||tampilanKosong('inbox','Belum ada data.')}</ul>`;}
-    function buatKolomForm(c,f,v){const[n,label,type,opts]=f;let input='';const val=esc(v[n]??'');if(type==='select'){const a=typeof opts==='function'?opts():opts;input=`<select name="${n}" required>${a.map(x=>`<option ${x===v[n]?'selected':''}>${esc(x)}</option>`).join('')}</select>`;}else if(type==='area'){input=`<textarea name="${n}" rows="3" required>${val}</textarea>`;}else input=`<input name="${n}" type="${type}" ${type==='number'?'min="0"':''} value="${val}" required>`;return `<label class="field ${['deskripsi','terlibat','rundown','keterangan'].includes(n)?'wide':''}"><span>${label}</span>${input}</label>`;}
-    function tampilkanForm(id){const c=KONFIG[menuAktif];idDiedit=id||'';const current=id?DATA[c.table].find(x=>x.id===id):{tanggal:hariIni(),jenis:'Masuk',status:menuAktif==='proker'?'Akan Datang':'Hadir',dana_masuk:0,dana_keluar:0};$('#modal-judul').textContent=(id?'Ubah — ':'Baru — ')+c.t;$('#modal-sub').textContent='Isi data lalu tekan Simpan';$('#modal-isi').innerHTML=`<form class="form" onsubmit="simpanData(event)">${c.fields.map(f=>buatKolomForm(c,f,current)).join('')}<div class="form-actions"><button type="button" class="btn btn-outline" onclick="tampilkanDaftar()">Batal</button><button class="btn btn-navy"><i class="fa-solid fa-check"></i> Simpan</button></div></form>`;$('#modal-isi input,#modal-isi select')?.focus();}
-    async function simpanData(e){e.preventDefault();const c=KONFIG[menuAktif],payload={};for(const f of c.fields){const n=f[0],v=e.target.elements[n].value.trim();payload[n]=f[2]==='number'?(Number(v)||0):v;}try{let result;if(idDiedit)result=await db.from(c.table).update(payload).eq('id',idDiedit);else result=await db.from(c.table).insert(payload);if(result.error)throw result.error;if(menuAktif==='proker'){const id=idDiedit||null;if(id){const p=DATA.proker.find(x=>x.id===idDiedit);await sinkronKasProker({...p,...payload});}else{const{data}=await db.from('proker').select('*').order('created_at',{ascending:false}).limit(1).single();await sinkronKasProker(data);}}await muatData();await tampilkanDaftar();toast('Data berhasil disimpan.');}catch(err){toast('Gagal menyimpan: '+err.message,true);}}
-    async function sinkronKasProker(p){const id=p.id;const del=await db.from('kas').delete().eq('proker_id',id);if(del.error)throw del.error;const rows=[];if(Number(p.dana_masuk)>0)rows.push({tanggal:p.tanggal,jenis:'Masuk',jumlah:p.dana_masuk,proker_id:id,keterangan:`Proker (${p.judul}): ${p.ket_masuk||'Dana Masuk Proker'}`});if(Number(p.dana_keluar)>0)rows.push({tanggal:p.tanggal,jenis:'Keluar',jumlah:p.dana_keluar,proker_id:id,keterangan:`Proker (${p.judul}): ${p.ket_keluar||'Biaya Proker'}`});if(rows.length){const ins=await db.from('kas').insert(rows);if(ins.error)throw ins.error;}}
-    async function hapusData(id){const yes=await tanyaKonfirmasi('Yakin ingin menghapus data ini?');if(!yes)return;const c=KONFIG[menuAktif];try{if(menuAktif==='proker'){const d=await db.from('kas').delete().eq('proker_id',id);if(d.error)throw d.error;}const r=await db.from(c.table).delete().eq('id',id);if(r.error)throw r.error;await muatData();await tampilkanDaftar();toast('Data dihapus.');}catch(err){toast('Gagal menghapus: '+err.message,true);}}
-    function tanyaKonfirmasi(msg){return new Promise(resolve=>{$('#konfirmasi-teks').textContent=msg;$('#konfirmasi').hidden=false;tutupKonfirmasi=v=>{$('#konfirmasi').hidden=true;tutupKonfirmasi=null;resolve(v)};$('#konfirmasi-ya').onclick=()=>tutupKonfirmasi(true);$('#konfirmasi-batal').onclick=()=>tutupKonfirmasi(false);});}
-    async function muatData(){const tables=['anggota','kas','proker','absen'];const results=await Promise.all(tables.map(t=>db.from(t).select('*').order('created_at',{ascending:false})));for(let i=0;i<tables.length;i++){if(results[i].error)throw results[i].error;DATA[tables[i]]=results[i].data||[];}renderSemua();}
-    function renderSemua(){renderBeranda();renderAnggota();renderKas();renderProker();}
+    function tutupModal(){$('#modal').hidden=true;document.body.style.overflow='';}
+    
+    async function tampilkanDaftar(){
+      const c=KONFIG[menuAktif],list=c.rev?[...DATA[c.table]].reverse():DATA[c.table];
+      $('#modal-judul').textContent=c.t;
+      $('#modal-sub').textContent=`Total ${list.length} ${c.n}`;
+      $('#modal-isi').innerHTML=`
+        <div class="toolbar"><button class="btn btn-navy" onclick="tampilkanForm()"><i class="fa-solid fa-plus"></i> ${c.add}</button></div>
+        <ul class="list">${list.map(x=>{const[j,s]=c.row(x);return `<li class="row"><div class="row-text"><b>${esc(j)}</b><span>${esc(s)}</span></div><div class="row-actions"><button class="icon-btn" onclick="tampilkanForm('${x.id}')" aria-label="Ubah"><i class="fa-solid fa-pen"></i></button><button class="icon-btn danger" onclick="hapusData('${x.id}')" aria-label="Hapus"><i class="fa-solid fa-trash"></i></button></div></li>`}).join('')||tampilanKosong('inbox','Belum ada data.')}</ul>`;
+    }
+    
+    function buatKolomForm(c,f,v){
+      const[n,label,type,opts,isRequired]=f;
+      let input='';
+      const val=esc(v[n]??'');
+      const reqAttr=isRequired?'required':''; // Hanya wajib jika true
+      if(type==='select'){
+        const a=typeof opts==='function'?opts():opts;
+        input=`<select name="${n}" ${reqAttr}>${a.map(x=>`<option ${x===v[n]?'selected':''}>${esc(x)}</option>`).join('')}</select>`;
+      }else if(type==='area'){
+        input=`<textarea name="${n}" rows="3" ${reqAttr}>${val}</textarea>`;
+      }else{
+        input=`<input name="${n}" type="${type}" ${type==='number'?'min="0"':''} value="${val}" ${reqAttr} placeholder="${n==='link_drive'?'https://drive.google.com/...':''}">`;
+      }
+      return `<label class="field ${['deskripsi','terlibat','rundown','keterangan','link_drive'].includes(n)?'wide':''}"><span>${label}</span>${input}</label>`;
+    }
+    
+    function tampilkanForm(id){
+      const c=KONFIG[menuAktif];idDiedit=id||'';
+      const current=id?DATA[c.table].find(x=>x.id===id):{tanggal:hariIni(),jenis:'Masuk',status:menuAktif==='proker'?'Akan Datang':'Hadir',dana_masuk:0,dana_keluar:0};
+      $('#modal-judul').textContent=(id?'Ubah — ':'Baru — ')+c.t;
+      $('#modal-sub').textContent='Isi data lalu tekan Simpan';
+      $('#modal-isi').innerHTML=`<form class="form" onsubmit="simpanData(event)">${c.fields.map(f=>buatKolomForm(c,f,current)).join('')}<div class="form-actions"><button type="button" class="btn btn-outline" onclick="tampilkanDaftar()">Batal</button><button class="btn btn-navy"><i class="fa-solid fa-check"></i> Simpan</button></div></form>`;
+    }
+
+    async function simpanData(e){
+      e.preventDefault();
+      const c=KONFIG[menuAktif],payload={};
+      for(const f of c.fields){
+        const n=f[0],v=e.target.elements[n]?.value?.trim()||'';
+        payload[n]=f[2]==='number'?(Number(v)||0):v;
+      }
+      try{
+        let result;
+        if(idDiedit) result=await db.from(c.table).update(payload).eq('id',idDiedit);
+        else result=await db.from(c.table).insert(payload);
+        if(result.error) throw result.error;
+
+        if(menuAktif==='proker'){
+          const id=idDiedit||null;
+          if(id){
+            const p=DATA.proker.find(x=>x.id===idDiedit);
+            await sinkronKasProker({...p,...payload});
+          }else{
+            const{data}=await db.from('proker').select('*').order('created_at',{ascending:false}).limit(1).single();
+            if(data) await sinkronKasProker(data);
+          }
+        }
+        await muatData();
+        await tampilkanDaftar();
+        toast('Data berhasil disimpan.');
+      }catch(err){
+        toast('Gagal menyimpan: '+err.message,true);
+      }
+    }
+
+    async function sinkronKasProker(p){
+      const id=p.id;
+      const del=await db.from('kas').delete().eq('proker_id',id);
+      if(del.error) throw del.error;
+      const rows=[];
+      if(Number(p.dana_masuk)>0) rows.push({tanggal:p.tanggal,jenis:'Masuk',jumlah:p.dana_masuk,proker_id:id,keterangan:`Proker (${p.judul}): ${p.ket_masuk||'Dana Masuk Proker'}`});
+      if(Number(p.dana_keluar)>0) rows.push({tanggal:p.tanggal,jenis:'Keluar',jumlah:p.dana_keluar,proker_id:id,keterangan:`Proker (${p.judul}): ${p.ket_keluar||'Biaya Proker'}`});
+      if(rows.length){
+        const ins=await db.from('kas').insert(rows);
+        if(ins.error) throw ins.error;
+      }
+    }
+
+    async function hapusData(id){
+      const yes=await tanyaKonfirmasi('Yakin ingin menghapus data ini?');
+      if(!yes)return;
+      const c=KONFIG[menuAktif];
+      try{
+        if(menuAktif==='proker'){
+          const d=await db.from('kas').delete().eq('proker_id',id);
+          if(d.error) throw d.error;
+        }
+        const r=await db.from(c.table).delete().eq('id',id);
+        if(r.error) throw r.error;
+        await muatData();
+        await tampilkanDaftar();
+        toast('Data dihapus.');
+      }catch(err){
+        toast('Gagal menghapus: '+err.message,true);
+      }
+    }
+
+    function tanyaKonfirmasi(msg){
+      return new Promise(resolve=>{
+        $('#konfirmasi-teks').textContent=msg;
+        $('#konfirmasi').hidden=false;
+        tutupKonfirmasi=v=>{$('#konfirmasi').hidden=true;tutupKonfirmasi=null;resolve(v)};
+        $('#konfirmasi-ya').onclick=()=>tutupKonfirmasi(true);
+        $('#konfirmasi-batal').onclick=()=>tutupKonfirmasi(false);
+      });
+    }
+
+    async function muatData(){
+      const tables=['anggota','kas','proker','absen'];
+      const results=await Promise.all(tables.map(t=>db.from(t).select('*').order('created_at',{ascending:false})));
+      for(let i=0;i<tables.length;i++){
+        if(results[i].error) throw results[i].error;
+        DATA[tables[i]]=results[i].data||[];
+      }
+      renderSemua();
+    }
+
+    function renderSemua(){
+      renderBeranda();
+      renderAnggota();
+      renderKas();
+      renderProker();
+    }
+
     addEventListener('keydown',e=>{if(e.key==='Escape'){if(tutupKonfirmasi)tutupKonfirmasi(false);else if(!$('#modal').hidden)tutupModal();}});
-    async function mulai(){try{if(SUPABASE_URL.includes('xxxxxx')||SUPABASE_ANON_KEY.includes('sb_publishable_...')){toast('Isi SUPABASE_URL dan SUPABASE_ANON_KEY di bagian bawah file HTML.',true);return;}await muatData();renderAdmin();go(location.hash.slice(1)||'dashboard');}catch(e){console.error(e);toast('Gagal memuat database: '+e.message,true);}}
+    
+    async function mulai(){
+      try{
+        await muatData();
+        renderAdmin();
+        go(location.hash.slice(1)||'dashboard');
+      }catch(e){
+        console.error(e);
+        toast('Gagal memuat database: '+e.message,true);
+      }
+    }
     mulai();
   </script>
 
