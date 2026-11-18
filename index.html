@@ -12,19 +12,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-    /* ==========================================================
-       DAFTAR ISI CSS
-       1. Variabel warna      8. Anggota
-       2. Reset dasar         9. Kas
-       3. Header & Menu      10. Program Kerja
-       4. Layout & Tab       11. Admin
-       5. Komponen umum      12. Modal (popup)
-       6. Tombol & Label     13. Notifikasi (toast)
-       7. Beranda            14. Responsif (HP)
-       ========================================================== */
-
-
-    /* ---------- 1. VARIABEL WARNA (ubah warna tema di sini) ---------- */
     :root {
       --navy: #0B2E6B;
       --navy2: #1448A8;
@@ -39,16 +26,8 @@
       --r: 16px;
     }
 
-
-    /* ---------- 2. RESET DASAR ---------- */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-    }
-
-    [hidden] {
-      display: none !important;
-    }
+    * { box-sizing: border-box; margin: 0; }
+    [hidden] { display: none !important; }
 
     body {
       font: 15px/1.55 'Plus Jakarta Sans', system-ui, sans-serif;
@@ -58,46 +37,15 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    button,
-    input,
-    select,
-    textarea {
-      font: inherit;
-      color: inherit;
-    }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    button { cursor: pointer; border: 0; background: none; }
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
 
-    button {
-      cursor: pointer;
-      border: 0;
-      background: none;
-    }
+    h2 { font-size: 22px; font-weight: 800; letter-spacing: -.01em; }
+    h3 { font-size: 16px; font-weight: 700; }
+    .mut { color: var(--mut); }
+    .mono { font-variant-numeric: tabular-nums; }
 
-    :focus-visible {
-      outline: 3px solid var(--gold);
-      outline-offset: 2px;
-    }
-
-    h2 {
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: -.01em;
-    }
-
-    h3 {
-      font-size: 16px;
-      font-weight: 700;
-    }
-
-    .mut {
-      color: var(--mut);
-    }
-
-    .mono {
-      font-variant-numeric: tabular-nums;
-    }
-
-
-    /* ---------- 3. HEADER & MENU NAVIGASI ---------- */
     header {
       background: var(--navy);
       position: sticky;
@@ -115,7 +63,6 @@
       gap: 16px;
     }
 
-    /* Logo + nama organisasi */
     .brand {
       display: flex;
       align-items: center;
@@ -133,10 +80,7 @@
       line-height: 1.2;
     }
 
-    .brand small {
-      font-size: 11px;
-      color: var(--gold2);
-    }
+    .brand small { font-size: 11px; color: var(--gold2); }
 
     .logo {
       position: relative;
@@ -161,12 +105,7 @@
       background: #fff;
     }
 
-    /* Menu: di laptop ada di header, di HP pindah ke bawah (lihat bagian 14) */
-    nav {
-      display: flex;
-      gap: 4px;
-    }
-
+    nav { display: flex; gap: 4px; }
     nav button {
       display: flex;
       align-items: center;
@@ -178,72 +117,26 @@
       font-size: 14px;
       transition: .2s;
     }
+    nav button:hover { background: rgba(255, 255, 255, .1); color: #fff; }
+    nav button[aria-current=page] { background: var(--gold); color: var(--navy); }
 
-    nav button:hover {
-      background: rgba(255, 255, 255, .1);
-      color: #fff;
-    }
-
-    nav button[aria-current=page] {
-      background: var(--gold);
-      color: var(--navy);
-    }
-
-
-    /* ---------- 4. LAYOUT & TAB ---------- */
-    main {
-      max-width: 1080px;
-      margin: auto;
-      padding: 20px 16px 40px;
-    }
-
-    .tab {
-      display: none;
-    }
-
-    .tab.on {
-      display: block;
-      animation: naik .35s ease;
-    }
+    main { max-width: 1080px; margin: auto; padding: 20px 16px 40px; }
+    .tab { display: none; }
+    .tab.on { display: block; animation: naik .35s ease; }
 
     @keyframes naik {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
-      }
+      from { opacity: 0; transform: translateY(8px); }
     }
 
-    .grid {
-      display: grid;
-      gap: 14px;
-    }
+    .grid { display: grid; gap: 14px; }
+    .g2 { grid-template-columns: repeat(2, 1fr); }
+    .g3 { grid-template-columns: repeat(3, 1fr); }
+    .page-head { margin-bottom: 16px; }
+    .page-head p { color: var(--mut); font-size: 14px; }
+    footer { text-align: center; color: var(--mut); font-size: 12.5px; padding: 8px 16px 28px; }
+    .footer-credit { display: block; font-weight: 600; }
+    .nav-credit { display: none; }
 
-    .g2 {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .g3 {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    .page-head {
-      margin-bottom: 16px;
-    }
-
-    .page-head p {
-      color: var(--mut);
-      font-size: 14px;
-    }
-
-    footer {
-      text-align: center;
-      color: var(--mut);
-      font-size: 12.5px;
-      padding: 8px 16px 28px;
-    }
-
-
-    /* ---------- 5. KOMPONEN UMUM (kartu, input, state kosong) ---------- */
     .card {
       background: #fff;
       border: 1px solid var(--line);
@@ -252,9 +145,7 @@
       box-shadow: 0 1px 2px rgba(11, 46, 107, .05);
     }
 
-    input,
-    select,
-    textarea {
+    input, select, textarea {
       width: 100%;
       min-height: 44px;
       padding: 11px 14px;
@@ -264,20 +155,13 @@
       transition: .15s;
     }
 
-    input:focus,
-    select:focus,
-    textarea:focus {
+    input:focus, select:focus, textarea:focus {
       outline: none;
       border-color: var(--navy2);
       box-shadow: 0 0 0 4px rgba(20, 72, 168, .12);
     }
 
-    .field span {
-      display: block;
-      font-size: 12.5px;
-      font-weight: 700;
-      margin-bottom: 5px;
-    }
+    .field span { display: block; font-size: 12.5px; font-weight: 700; margin-bottom: 5px; }
 
     .empty {
       grid-column: 1 / -1;
@@ -288,34 +172,12 @@
       border: 1.5px dashed var(--line);
       border-radius: 14px;
     }
+    .empty i { display: block; font-size: 26px; margin-bottom: 8px; color: var(--gold); }
 
-    .empty i {
-      display: block;
-      font-size: 26px;
-      margin-bottom: 8px;
-      color: var(--gold);
-    }
+    .section-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .section-head a { color: var(--navy2); font-weight: 700; font-size: 13px; cursor: pointer; }
+    .section-head a:hover { text-decoration: underline; }
 
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .section-head a {
-      color: var(--navy2);
-      font-weight: 700;
-      font-size: 13px;
-      cursor: pointer;
-    }
-
-    .section-head a:hover {
-      text-decoration: underline;
-    }
-
-
-    /* ---------- 6. TOMBOL & LABEL STATUS ---------- */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -328,59 +190,19 @@
       font-size: 14px;
       transition: .15s;
     }
+    .btn:active { transform: scale(.97); }
+    .btn:disabled { opacity: .6; cursor: wait; }
 
-    .btn:active {
-      transform: scale(.97);
-    }
+    .btn-gold { background: var(--gold); color: var(--navy); }
+    .btn-gold:hover { background: #FFC72C; }
+    .btn-navy { background: var(--navy); color: #fff; }
+    .btn-navy:hover { background: var(--navy2); }
+    .btn-outline { background: #fff; border: 1.5px solid var(--line); }
+    .btn-outline:hover { border-color: var(--navy); }
+    .btn-ghost { background: rgba(255, 255, 255, .14); color: #fff; border: 1px solid rgba(255, 255, 255, .35); }
+    .btn-ghost:hover { background: rgba(255, 255, 255, .24); }
+    .btn-danger { background: var(--red); color: #fff; }
 
-    .btn:disabled {
-      opacity: .6;
-      cursor: wait;
-    }
-
-    .btn-gold {
-      background: var(--gold);
-      color: var(--navy);
-    }
-
-    .btn-gold:hover {
-      background: #FFC72C;
-    }
-
-    .btn-navy {
-      background: var(--navy);
-      color: #fff;
-    }
-
-    .btn-navy:hover {
-      background: var(--navy2);
-    }
-
-    .btn-outline {
-      background: #fff;
-      border: 1.5px solid var(--line);
-    }
-
-    .btn-outline:hover {
-      border-color: var(--navy);
-    }
-
-    .btn-ghost {
-      background: rgba(255, 255, 255, .14);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, .35);
-    }
-
-    .btn-ghost:hover {
-      background: rgba(255, 255, 255, .24);
-    }
-
-    .btn-danger {
-      background: var(--red);
-      color: #fff;
-    }
-
-    /* Label kecil berwarna (status) */
     .chip {
       display: inline-flex;
       align-items: center;
@@ -391,32 +213,12 @@
       font-weight: 700;
       white-space: nowrap;
     }
+    .chip-ok { background: #E4F6EC; color: #0B7A45; }
+    .chip-blue { background: #E3ECFF; color: var(--navy2); }
+    .chip-gray { background: #EEF0F4; color: #5A6577; }
+    .text-green { color: var(--green); }
+    .text-red { color: var(--red); }
 
-    .chip-ok {
-      background: #E4F6EC;
-      color: #0B7A45;
-    }
-
-    .chip-blue {
-      background: #E3ECFF;
-      color: var(--navy2);
-    }
-
-    .chip-gray {
-      background: #EEF0F4;
-      color: #5A6577;
-    }
-
-    .text-green {
-      color: var(--green);
-    }
-
-    .text-red {
-      color: var(--red);
-    }
-
-
-    /* ---------- 7. BERANDA ---------- */
     .hero {
       position: relative;
       overflow: hidden;
@@ -425,783 +227,152 @@
       color: #fff;
       background: linear-gradient(135deg, var(--navy), var(--navy2));
     }
-
     .hero::before {
-      content: "";
-      position: absolute;
-      right: -70px;
-      top: -70px;
-      width: 250px;
-      height: 250px;
-      border-radius: 50%;
-      background: var(--gold);
+      content: ""; position: absolute; right: -70px; top: -70px; width: 250px; height: 250px; border-radius: 50%; background: var(--gold);
     }
-
     .hero::after {
-      content: "";
-      position: absolute;
-      right: 70px;
-      bottom: -90px;
-      width: 170px;
-      height: 170px;
-      border-radius: 50%;
-      background: var(--green);
-    }
-
-    .hero>* {
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero .chip {
-      background: rgba(255, 255, 255, .16);
-      color: var(--gold2);
-    }
-
-    .hero h2 {
-      font-size: 28px;
-      margin: 12px 0 8px;
-      max-width: 520px;
-    }
-
-    .hero p {
-      color: #D6E1F8;
-      max-width: 520px;
-      font-size: 14.5px;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .hero-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px 16px;
-      margin-top: 18px;
-      font-size: 12.5px;
-      color: #C9D6F2;
-    }
-
-    /* Kartu statistik (angka ringkasan) */
-    .stat {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      width: 100%;
-      text-align: left;
-      transition: .2s;
-    }
-
-    button.stat:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 24px rgba(11, 46, 107, .12);
-    }
-
-    .stat small {
-      display: block;
-      color: var(--mut);
-      font-size: 12.5px;
-      font-weight: 600;
-    }
-
-    .stat strong {
-      font-size: 20px;
-      font-weight: 800;
-    }
-
-    .stat-icon {
-      flex: none;
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
-      display: grid;
-      place-items: center;
-      font-size: 18px;
-    }
-
-    .icon-blue {
-      background: #E3ECFF;
-      color: var(--navy2);
-    }
-
-    .icon-gold {
-      background: #FFF3CC;
-      color: #B07F00;
-    }
-
-    .icon-green {
-      background: #E4F6EC;
-      color: var(--green);
-    }
-
-    .icon-red {
-      background: #FDECEC;
-      color: var(--red);
-    }
-
-
-    /* ---------- 8. ANGGOTA ---------- */
-    .search {
-      position: relative;
-      margin-bottom: 12px;
-    }
-
-    .search i {
-      position: absolute;
-      left: 14px;
-      top: 15px;
-      color: var(--mut);
-    }
-
-    .search input {
-      padding-left: 40px;
-    }
-
-    .member-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 12px;
-    }
-
-    .member {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      padding: 12px;
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-    }
-
-    .member-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .member-info b {
-      display: block;
-    }
-
-    .member-info span {
-      font-size: 12.5px;
-      color: var(--mut);
-    }
-
-    .member-info i {
-      color: var(--gold);
-    }
-
-    .avatar {
-      flex: none;
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
-      display: grid;
-      place-items: center;
-      font-weight: 800;
-      color: #fff;
-    }
-
-    .av0 {
-      background: var(--navy);
-    }
-
-    .av1 {
-      background: var(--green);
-    }
-
-    .av2 {
-      background: #C98F00;
-    }
-
-    .av3 {
-      background: var(--navy2);
-    }
-
-
-    /* ---------- 9. KAS KEUANGAN ---------- */
-    .card-balance {
-      background: linear-gradient(135deg, var(--navy), var(--navy2));
-      color: #fff;
-      border: 0;
-    }
-
-    .card-balance small {
-      color: var(--gold2) !important;
-    }
-
-    .filter-row {
-      display: flex;
-      gap: 8px;
-      margin: 18px 0 12px;
-      overflow-x: auto;
-    }
-
-    .filter-btn {
-      padding: 8px 16px;
-      border-radius: 999px;
-      border: 1.5px solid var(--line);
-      background: #fff;
-      font-weight: 700;
-      font-size: 13px;
-      white-space: nowrap;
-    }
-
-    .filter-btn.on {
-      background: var(--navy);
-      color: #fff;
-      border-color: var(--navy);
-    }
-
-    .list {
-      list-style: none;
-      padding: 0;
-      display: grid;
-      gap: 8px;
-    }
-
-    .trx {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 14px;
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-    }
-
-    .trx>div {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .trx b {
-      display: block;
-      font-size: 14px;
-    }
-
-    .trx small {
-      color: var(--mut);
-    }
-
-    .trx strong {
-      font-size: 14px;
-      white-space: nowrap;
-    }
-
-    .trx-icon {
-      flex: none;
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
-      display: grid;
-      place-items: center;
-    }
-
-    .trx-in {
-      background: #E4F6EC;
-      color: var(--green);
-    }
-
-    .trx-out {
-      background: #FDECEC;
-      color: var(--red);
-    }
-
-
-    /* ---------- 10. PROGRAM KERJA ---------- */
-    .proker {
-      margin-bottom: 14px;
-      border-left: 5px solid var(--gold);
-    }
-
-    .proker-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 8px;
-    }
-
-    .proker-head small {
-      color: var(--mut);
-      font-weight: 700;
-      font-size: 11px;
-      letter-spacing: .08em;
-    }
-
-    .proker-head h3 {
-      font-size: 18px;
-    }
-
-    .tiles {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 10px;
-      margin: 14px 0;
-      padding: 12px;
-      background: var(--bg);
-      border-radius: 12px;
-    }
-
-    .tiles small {
-      display: block;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .05em;
-      color: var(--mut);
-    }
-
-    .tiles em {
-      display: block;
-      font-style: normal;
-      font-size: 12px;
-      color: var(--mut);
-    }
-
-    .tiles b {
-      font-size: 14px;
-    }
-
-    /* Timeline rundown acara */
-    .rundown {
-      list-style: none;
-      padding: 0;
-      margin: 10px 0 0 6px;
-      border-left: 3px solid var(--gold2);
-    }
-
-    .rundown li {
-      position: relative;
-      padding: 0 0 12px 18px;
-      font-size: 14px;
-    }
-
-    .rundown li::before {
-      content: "";
-      position: absolute;
-      left: -8.5px;
-      top: 5px;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: var(--navy);
-      border: 2px solid #fff;
-    }
-
-    .rundown b {
-      color: var(--navy2);
-      margin-right: 8px;
-    }
-
-
-    /* ---------- 11. ADMIN (login & panel) ---------- */
-    .login {
-      max-width: 400px;
-      margin: 20px auto;
-      padding: 28px 24px;
-      text-align: center;
-    }
-
-    .login form {
-      display: grid;
-      gap: 14px;
-      margin-top: 18px;
-      text-align: left;
-    }
-
-    .lock {
-      width: 58px;
-      height: 58px;
-      margin: 0 auto 12px;
-      border-radius: 18px;
-      background: var(--gold);
-      color: var(--navy);
-      display: grid;
-      place-items: center;
-      font-size: 22px;
-    }
-
-    .password-wrap {
-      position: relative;
-    }
-
-    .password-wrap button {
-      position: absolute;
-      right: 4px;
-      top: 2px;
-      width: 40px;
-      height: 40px;
-      color: var(--mut);
-    }
-
-    .error {
-      color: var(--red);
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .admin-banner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 14px;
-      padding: 22px;
-      background: var(--navy);
-      color: #fff;
-      border-radius: 20px;
-      border-bottom: 5px solid var(--gold);
-    }
-
-    .admin-banner p {
-      color: #C9D6F2;
-      font-size: 13.5px;
-    }
-
-    .admin-card {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      width: 100%;
-      padding: 16px;
-      text-align: left;
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: var(--r);
-      transition: .2s;
-    }
-
-    .admin-card:hover {
-      border-color: var(--gold);
-      transform: translateY(-3px);
-      box-shadow: 0 10px 24px rgba(11, 46, 107, .12);
-    }
-
-    .admin-card>div {
-      flex: 1;
-    }
-
-    .admin-card b {
-      display: block;
-    }
-
-    .admin-card span {
-      font-size: 13px;
-      color: var(--mut);
-    }
-
-    .admin-card>.fa-chevron-right {
-      color: var(--mut);
-    }
-
-    .span-all {
-      grid-column: 1 / -1;
-    }
-
-
-    /* ---------- 12. MODAL (popup kelola data & konfirmasi) ---------- */
-    .overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 60;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 14px;
-      background: rgba(8, 24, 56, .55);
-      backdrop-filter: blur(3px);
-    }
+      content: ""; position: absolute; right: 70px; bottom: -90px; width: 170px; height: 170px; border-radius: 50%; background: var(--green);
+    }
+    .hero > * { position: relative; z-index: 1; }
+    .hero .chip { background: rgba(255, 255, 255, .16); color: var(--gold2); }
+    .hero h2 { font-size: 28px; margin: 12px 0 8px; max-width: 520px; }
+    .hero p { color: #D6E1F8; max-width: 520px; font-size: 14.5px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 18px; font-size: 12.5px; color: #C9D6F2; }
+
+    .stat { display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; transition: .2s; }
+    button.stat:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(11, 46, 107, .12); }
+    .stat small { display: block; color: var(--mut); font-size: 12.5px; font-weight: 600; }
+    .stat strong { font-size: 20px; font-weight: 800; }
+    .stat-icon { flex: none; width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; font-size: 18px; }
+    .icon-blue { background: #E3ECFF; color: var(--navy2); }
+    .icon-gold { background: #FFF3CC; color: #B07F00; }
+    .icon-green { background: #E4F6EC; color: var(--green); }
+    .icon-red { background: #FDECEC; color: var(--red); }
+
+    .search { position: relative; margin-bottom: 12px; }
+    .search i { position: absolute; left: 14px; top: 15px; color: var(--mut); }
+    .search input { padding-left: 40px; }
+
+    .member-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+    .member { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; padding: 12px; background: #fff; border: 1px solid var(--line); border-radius: 14px; }
+    .member-info { flex: 1; min-width: 0; }
+    .member-info b { display: block; }
+    .member-info span { font-size: 12.5px; color: var(--mut); }
+    .member-info i { color: var(--gold); }
+    .avatar { flex: none; width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; font-weight: 800; color: #fff; }
+    .av0 { background: var(--navy); }
+    .av1 { background: var(--green); }
+    .av2 { background: #C98F00; }
+    .av3 { background: var(--navy2); }
+
+    .card-balance { background: linear-gradient(135deg, var(--navy), var(--navy2)); color: #fff; border: 0; }
+    .card-balance small { color: var(--gold2) !important; }
+    .filter-row { display: flex; gap: 8px; margin: 18px 0 12px; overflow-x: auto; }
+    .filter-btn { padding: 8px 16px; border-radius: 999px; border: 1.5px solid var(--line); background: #fff; font-weight: 700; font-size: 13px; white-space: nowrap; }
+    .filter-btn.on { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .list { list-style: none; padding: 0; display: grid; gap: 8px; }
+    .trx { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: #fff; border: 1px solid var(--line); border-radius: 14px; }
+    .trx > div { flex: 1; min-width: 0; }
+    .trx b { display: block; font-size: 14px; }
+    .trx small { color: var(--mut); }
+    .trx strong { font-size: 14px; white-space: nowrap; }
+    .trx-icon { flex: none; width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; }
+    .trx-in { background: #E4F6EC; color: var(--green); }
+    .trx-out { background: #FDECEC; color: var(--red); }
+
+    .proker { margin-bottom: 14px; border-left: 5px solid var(--gold); }
+    .proker-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+    .proker-head small { color: var(--mut); font-weight: 700; font-size: 11px; letter-spacing: .08em; }
+    .proker-head h3 { font-size: 18px; }
+    .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin: 14px 0; padding: 12px; background: var(--bg); border-radius: 12px; }
+    .tiles small { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--mut); }
+    .tiles em { display: block; font-style: normal; font-size: 12px; color: var(--mut); }
+    .tiles b { font-size: 14px; }
+
+    .rundown { list-style: none; padding: 0; margin: 10px 0 0 6px; border-left: 3px solid var(--gold2); }
+    .rundown li { position: relative; padding: 0 0 12px 18px; font-size: 14px; }
+    .rundown li::before { content: ""; position: absolute; left: -8.5px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--navy); border: 2px solid #fff; }
+    .rundown b { color: var(--navy2); margin-right: 8px; }
+
+    .login { max-width: 400px; margin: 20px auto; padding: 28px 24px; text-align: center; }
+    .login form { display: grid; gap: 14px; margin-top: 18px; text-align: left; }
+    .lock { width: 58px; height: 58px; margin: 0 auto 12px; border-radius: 18px; background: var(--gold); color: var(--navy); display: grid; place-items: center; font-size: 22px; }
+    .password-wrap { position: relative; }
+    .password-wrap button { position: absolute; right: 4px; top: 2px; width: 40px; height: 40px; color: var(--mut); }
+    .error { color: var(--red); font-size: 13px; font-weight: 600; }
+
+    .admin-banner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 14px; padding: 22px; background: var(--navy); color: #fff; border-radius: 20px; border-bottom: 5px solid var(--gold); }
+    .admin-banner p { color: #C9D6F2; font-size: 13.5px; }
+
+    .admin-card { display: flex; align-items: center; gap: 14px; width: 100%; padding: 16px; text-align: left; background: #fff; border: 1px solid var(--line); border-radius: var(--r); transition: .2s; }
+    .admin-card:hover { border-color: var(--gold); transform: translateY(-3px); box-shadow: 0 10px 24px rgba(11, 46, 107, .12); }
+    .admin-card > div { flex: 1; }
+    .admin-card b { display: block; }
+    .admin-card span { font-size: 13px; color: var(--mut); }
+    .admin-card > .fa-chevron-right { color: var(--mut); }
+    .span-all { grid-column: 1 / -1; }
+
+    .overlay { position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center; padding: 14px; background: rgba(8, 24, 56, .55); backdrop-filter: blur(3px); }
+    .overlay-confirm { z-index: 80; }
+    .modal { width: 100%; max-width: 560px; max-height: 90vh; display: flex; flex-direction: column; background: #fff; border-radius: 20px; border-top: 5px solid var(--gold); animation: naik .25s ease; }
+    .overlay-confirm .modal { max-width: 380px; padding: 22px; text-align: center; }
+    .overlay-confirm .modal p { margin: 8px 0 18px; font-weight: 600; }
+
+    .modal-head { display: flex; justify-content: space-between; gap: 10px; padding: 16px 18px 12px; border-bottom: 1px solid var(--line); }
+    .modal-head p { font-size: 13px; color: var(--mut); }
+    .modal-close { flex: none; width: 40px; height: 40px; border-radius: 12px; font-size: 20px; color: var(--mut); }
+    .modal-close:hover { background: var(--bg); }
+    .modal-body { padding: 16px 18px 18px; overflow-y: auto; }
+
+    .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 12px; }
+    .row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; }
+    .row-text { flex: 1; min-width: 0; }
+    .row-text b { display: block; font-size: 14px; overflow-wrap: anywhere; }
+    .row-text span { font-size: 12.5px; color: var(--mut); }
+    .row-actions { display: flex; gap: 6px; }
+
+    .icon-btn { width: 40px; height: 40px; border-radius: 10px; background: var(--bg); color: var(--navy2); }
+    .icon-btn:hover { background: #E3ECFF; }
+    .icon-btn.danger { background: #FDECEC; color: var(--red); }
 
-    .overlay-confirm {
-      z-index: 80;
-    }
-
-    .modal {
-      width: 100%;
-      max-width: 560px;
-      max-height: 90vh;
-      display: flex;
-      flex-direction: column;
-      background: #fff;
-      border-radius: 20px;
-      border-top: 5px solid var(--gold);
-      animation: naik .25s ease;
-    }
-
-    .overlay-confirm .modal {
-      max-width: 380px;
-      padding: 22px;
-      text-align: center;
-    }
-
-    .overlay-confirm .modal p {
-      margin: 8px 0 18px;
-      font-weight: 600;
-    }
-
-    .modal-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 16px 18px 12px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .modal-head p {
-      font-size: 13px;
-      color: var(--mut);
-    }
-
-    .modal-close {
-      flex: none;
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      font-size: 20px;
-      color: var(--mut);
-    }
-
-    .modal-close:hover {
-      background: var(--bg);
-    }
-
-    .modal-body {
-      padding: 16px 18px 18px;
-      overflow-y: auto;
-    }
-
-    .toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-
-    /* Baris data di dalam modal */
-    .row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-    }
-
-    .row-text {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .row-text b {
-      display: block;
-      font-size: 14px;
-      overflow-wrap: anywhere;
-    }
-
-    .row-text span {
-      font-size: 12.5px;
-      color: var(--mut);
-    }
-
-    .row-actions {
-      display: flex;
-      gap: 6px;
-    }
-
-    .icon-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: var(--bg);
-      color: var(--navy2);
-    }
-
-    .icon-btn:hover {
-      background: #E3ECFF;
-    }
-
-    .icon-btn.danger {
-      background: #FDECEC;
-      color: var(--red);
-    }
-
-    /* Form di dalam modal */
-    .form {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .form .wide {
-      grid-column: 1 / -1;
-    }
-
-    .form-actions {
-      grid-column: 1 / -1;
-      display: flex;
-      gap: 10px;
-    }
-
-    .form-actions .btn {
-      flex: 1;
-    }
-
-
-    /* ---------- 13. NOTIFIKASI (toast) ---------- */
-    #toasts {
-      position: fixed;
-      left: 50%;
-      bottom: 24px;
-      transform: translateX(-50%);
-      z-index: 90;
-      display: grid;
-      gap: 8px;
-      width: calc(100% - 28px);
-      max-width: 420px;
-    }
-
-    .toast {
-      padding: 12px 16px;
-      background: var(--navy);
-      color: #fff;
-      font-weight: 600;
-      font-size: 14px;
-      border-radius: 12px;
-      border-left: 5px solid var(--green);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
-      animation: naik .25s;
-    }
-
-    .toast.error-toast {
-      border-color: var(--red);
-    }
+    .form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form .wide { grid-column: 1 / -1; }
+    .form-actions { grid-column: 1 / -1; display: flex; gap: 10px; }
+    .form-actions .btn { flex: 1; }
 
+    #toasts { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 90; display: grid; gap: 8px; width: calc(100% - 28px); max-width: 420px; }
+    .toast { padding: 12px 16px; background: var(--navy); color: #fff; font-weight: 600; font-size: 14px; border-radius: 12px; border-left: 5px solid var(--green); box-shadow: 0 10px 30px rgba(0, 0, 0, .25); animation: naik .25s; }
+    .toast.error-toast { border-color: var(--red); }
 
-    /* ---------- 14. RESPONSIF (tampilan HP) ---------- */
     @media (max-width: 820px) {
-      .header-inner {
-        padding: 8px 14px;
-      }
-
-      /* Menu pindah ke bawah layar agar mudah dijangkau jempol */
-      nav {
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 40;
-        justify-content: space-around;
-        padding: 6px 6px calc(6px + env(safe-area-inset-bottom));
-        background: #fff;
-        border-top: 1px solid var(--line);
-        box-shadow: 0 -6px 20px rgba(11, 46, 107, .12);
-      }
-
-      nav button {
-        flex: 1;
-        flex-direction: column;
-        gap: 2px;
-        padding: 6px 4px;
-        border-radius: 12px;
-        font-size: 11px;
-        color: var(--mut);
-      }
-
-      nav button i {
-        font-size: 18px;
-      }
-
-      nav button:hover {
-        background: var(--bg);
-        color: var(--navy);
-      }
-
-      nav button[aria-current=page] {
-        background: var(--navy);
-        color: var(--gold);
-      }
-
-      main {
-        padding-bottom: 96px;
-      }
-
-      #toasts {
-        bottom: 92px;
-      }
-
-      .g2,
-      .g3,
-      .form {
-        grid-template-columns: 1fr;
-      }
-
-      .hero {
-        padding: 24px 20px;
-      }
-
-      .hero h2 {
-        font-size: 23px;
-        padding-right: 50px;
-      }
-
-      .hero::before {
-        width: 130px;
-        height: 130px;
-        right: -50px;
-        top: -50px;
-      }
-
-      .hero::after {
-        display: none;
-      }
-
-      /* Modal muncul dari bawah layar */
-      .overlay {
-        align-items: flex-end;
-        padding: 0;
-      }
-
-      .modal {
-        max-height: 94vh;
-        border-radius: 22px 22px 0 0;
-      }
-
-      .overlay-confirm {
-        align-items: center;
-        padding: 14px;
-      }
-
-      .overlay-confirm .modal {
-        border-radius: 20px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        animation: none !important;
-        transition: none !important;
-      }
+      .header-inner { padding: 8px 14px; }
+      nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; flex-wrap: wrap; justify-content: space-around; padding: 6px 6px calc(6px + env(safe-area-inset-bottom)); background: #fff; border-top: 1px solid var(--line); box-shadow: 0 -6px 20px rgba(11, 46, 107, .12); }
+      nav button { flex: 1; flex-direction: column; gap: 2px; padding: 6px 4px; border-radius: 12px; font-size: 11px; color: var(--mut); }
+      nav button i { font-size: 18px; }
+      nav button:hover { background: var(--bg); color: var(--navy); }
+      nav button[aria-current=page] { background: var(--navy); color: var(--gold); }
+      .nav-credit { display: block; flex: 0 0 100%; text-align: center; font-size: 10.5px; font-weight: 600; color: var(--mut); padding-top: 2px; }
+      .footer-credit { display: none; }
+      main { padding-bottom: 116px; }
+      #toasts { bottom: 112px; }
+      .g2, .g3, .form { grid-template-columns: 1fr; }
+      .hero { padding: 24px 20px; }
+      .hero h2 { font-size: 23px; padding-right: 50px; }
+      .hero::before { width: 130px; height: 130px; right: -50px; top: -50px; }
+      .hero::after { display: none; }
+      .overlay { align-items: flex-end; padding: 0; }
+      .modal { max-height: 94vh; border-radius: 22px 22px 0 0; }
+      .overlay-confirm { align-items: center; padding: 14px; }
+      .overlay-confirm .modal { border-radius: 20px; }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- ==========================================================
-       BAGIAN 1 — HEADER (logo + menu navigasi)
-       ========================================================== -->
   <header>
     <div class="header-inner">
-
       <div class="brand">
         <div class="logo">
           KT
@@ -1229,50 +400,32 @@
         <button data-tab="admin" onclick="go('admin')">
           <i class="fa-solid fa-shield-halved"></i><span>Admin</span>
         </button>
+        <small class="nav-credit">@ Create Karang Taruna Rt 13</small>
       </nav>
-
     </div>
   </header>
 
-
   <main>
-
-    <!-- ========================================================
-         BAGIAN 2 — HALAMAN BERANDA (isi dibuat oleh JS: renderBeranda)
-         ======================================================== -->
     <section id="tab-dashboard" class="tab"></section>
 
-
-    <!-- ========================================================
-         BAGIAN 3 — HALAMAN ANGGOTA
-         ======================================================== -->
     <section id="tab-anggota" class="tab">
       <div class="page-head">
         <h2>Anggota Karang Taruna</h2>
         <p>Pemuda-pemudi warga RT 13 Nusa Muda yang aktif bergerak.</p>
       </div>
-
       <div class="search">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input id="cari-anggota" type="search" placeholder="Cari nama atau jabatan…"
-               aria-label="Cari anggota" oninput="renderAnggota()">
+        <input id="cari-anggota" type="search" placeholder="Cari nama atau jabatan…" aria-label="Cari anggota" oninput="renderAnggota()">
       </div>
-
       <p id="jumlah-anggota" class="mut" style="font-size:13px; margin-bottom:10px"></p>
       <div id="daftar-anggota" class="member-grid"></div>
     </section>
 
-
-    <!-- ========================================================
-         BAGIAN 4 — HALAMAN KAS KEUANGAN
-         ======================================================== -->
     <section id="tab-kas" class="tab">
       <div class="page-head">
         <h2>Transparansi Kas</h2>
         <p>Semua arus dana masuk dan keluar, termasuk dari tiap program kerja, dapat dilihat warga.</p>
       </div>
-
-      <!-- Kartu ringkasan saldo -->
       <div class="grid g3">
         <div class="card card-balance stat">
           <span class="stat-icon icon-gold"><i class="fa-solid fa-sack-dollar"></i></span>
@@ -1287,22 +440,14 @@
           <div><small>Total Pengeluaran</small><strong id="kas-keluar" class="text-red"></strong></div>
         </div>
       </div>
-
-      <!-- Tombol filter transaksi -->
       <div class="filter-row" role="group" aria-label="Filter transaksi">
         <button class="filter-btn on" data-filter="Semua" onclick="setFilterKas('Semua')">Semua</button>
         <button class="filter-btn" data-filter="Masuk" onclick="setFilterKas('Masuk')">Uang Masuk</button>
         <button class="filter-btn" data-filter="Keluar" onclick="setFilterKas('Keluar')">Uang Keluar</button>
       </div>
-
-      <!-- Riwayat transaksi -->
       <ul id="daftar-kas" class="list"></ul>
     </section>
 
-
-    <!-- ========================================================
-         BAGIAN 5 — HALAMAN PROGRAM KERJA
-         ======================================================== -->
     <section id="tab-proker" class="tab">
       <div class="page-head">
         <h2>Program Kerja</h2>
@@ -1311,56 +456,37 @@
       <div id="daftar-proker"></div>
     </section>
 
-
-    <!-- ========================================================
-         BAGIAN 6 — HALAMAN ADMIN (form login + panel pengurus)
-         ======================================================== -->
     <section id="tab-admin" class="tab">
-
-      <!-- 6a. Form login -->
       <div id="admin-login" class="card login">
         <div class="lock"><i class="fa-solid fa-lock"></i></div>
         <h3>Panel Pengurus</h3>
-        <p class="mut" style="font-size:14px">Masuk untuk mengelola data Karang Taruna.</p>
-
+        <p class="mut" style="font-size:14px">Masuk menggunakan Username & Password.</p>
         <form onsubmit="handleLogin(event)">
           <label class="field">
-            <span>Email Admin</span>
-            <input id="login-user" type="email" autocomplete="username" placeholder="admin@email.com" required>
+            <span>Username Admin</span>
+            <input id="login-user" type="text" autocomplete="username" placeholder="Contoh: rafi" required>
           </label>
-
           <label class="field">
             <span>Password</span>
             <div class="password-wrap">
-              <input id="login-pass" type="password" autocomplete="current-password"
-                     required style="padding-right:46px">
+              <input id="login-pass" type="password" autocomplete="current-password" required style="padding-right:46px">
               <button type="button" onclick="togglePassword()" aria-label="Tampilkan password">
                 <i id="icon-mata" class="fa-solid fa-eye"></i>
               </button>
             </div>
           </label>
-
           <p id="login-error" class="error" role="alert" hidden>
-            <i class="fa-solid fa-circle-exclamation"></i> Email atau password salah, atau akun belum diberi akses admin.
+            <i class="fa-solid fa-circle-exclamation"></i> Username atau password salah.
           </p>
-
           <button id="login-btn" class="btn btn-navy">Masuk Sistem</button>
         </form>
       </div>
-
-      <!-- 6b. Panel pengurus (diisi JS: renderAdmin) -->
       <div id="admin-panel" hidden></div>
-
     </section>
   </main>
 
-  <footer>© Karang Taruna RT 13 Nusa Muda · Dari warga, oleh pemuda, untuk lingkungan</footer>
+  <footer><span class="footer-credit">@ Create Karang Taruna Rt 13</span></footer>
 
-
-  <!-- ==========================================================
-       BAGIAN 7 — MODAL KELOLA DATA (anggota, kas, proker, admin, absensi)
-       Isinya diganti-ganti oleh JS sesuai menu admin yang dibuka.
-       ========================================================== -->
   <div id="modal" class="overlay" hidden onclick="if (event.target === this) tutupModal()">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-judul">
       <div class="modal-head">
@@ -1374,10 +500,6 @@
     </div>
   </div>
 
-
-  <!-- ==========================================================
-       BAGIAN 8 — DIALOG KONFIRMASI HAPUS
-       ========================================================== -->
   <div id="konfirmasi" class="overlay overlay-confirm" hidden>
     <div class="modal" role="alertdialog" aria-modal="true">
       <div class="lock" style="background:#FDECEC; color:var(--red)">
@@ -1391,25 +513,20 @@
     </div>
   </div>
 
-
-  <!-- ==========================================================
-       BAGIAN 9 — WADAH NOTIFIKASI (toast)
-       ========================================================== -->
   <div id="toasts" aria-live="polite"></div>
-
 
   <!-- Supabase JS v2 -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // Isi dua nilai ini dari Supabase > Project Settings > API Keys.
-    const SUPABASE_URL = 'PASTE_PROJECT_URL_DI_SINI';
-    const SUPABASE_ANON_KEY = 'PASTE_PUBLISHABLE_KEY_DI_SINI';
+    const SUPABASE_URL = 'https://gxnrwcofhigzdqpgkact.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_EbwxF0zYLb9dBAFJo5-iqg_9xdWW7hx';
     const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const $ = (s) => document.querySelector(s);
     let DATA = { anggota: [], kas: [], proker: [], absen: [], admin: [] };
     let filterKas = 'Semua', menuAktif = '', idDiedit = '', fokusSebelumnya = null;
     let tutupKonfirmasi = null;
+    let currentAdmin = null;
 
     function esc(v) { const m={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}; return String(v ?? '').replace(/[&<>"']/g,c=>m[c]); }
     function rupiah(v) { return new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(Number(v)||0); }
@@ -1434,11 +551,50 @@
     function kartuProker(p,i){const r=buatRundown(p.rundown),remaining=p.status==='Selesai'?'':`<em>${hitungMundur(p.tanggal)}</em>`;return `<article class="card proker"><div class="proker-head"><div><small>PROGRAM #${i+1}</small><h3>${esc(p.judul)}</h3></div><span class="chip ${WARNA_STATUS[p.status]||'chip-gray'}">${esc(p.status)}</span></div><p class="mut" style="font-size:14px">${esc(p.deskripsi)}</p><div class="tiles"><div><small>Pelaksanaan</small><b><i class="fa-regular fa-calendar"></i> ${formatTanggal(p.tanggal)}</b>${remaining}</div><div><small>Dana masuk</small><b class="text-green">+ ${rupiah(p.dana_masuk)}</b><em>${esc(p.ket_masuk||'-')}</em></div><div><small>Dana keluar</small><b class="text-red">− ${rupiah(p.dana_keluar)}</b><em>${esc(p.ket_keluar||'-')}</em></div><div><small>Panitia</small><b>${esc(p.terlibat||'-')}</b></div></div>${r?`<small style="font-weight:700;color:var(--mut)"><i class="fa-solid fa-clock-rotate-left"></i> RUNDOWN ACARA</small><ul class="rundown">${r}</ul>`:''}</article>`;}
     function renderProker(){$('#daftar-proker').innerHTML=DATA.proker.map(kartuProker).join('')||tampilanKosong('flag','Belum ada program kerja.');}
 
-    async function cekAdmin(){const{data:{user}}=await db.auth.getUser();if(!user)return false;const{data,error}=await db.from('admin_users').select('user_id,nama').eq('user_id',user.id).maybeSingle();if(error){console.error(error);return false;}return !!data;}
-    async function renderAdmin(){const{data:{user}}=await db.auth.getUser();const isAdmin=user?await cekAdmin():false;$('#admin-login').hidden=isAdmin;$('#admin-panel').hidden=!isAdmin;if(!isAdmin)return;const menus=[['anggota','users-gear','Kelola Anggota','Tambah, ubah jabatan, atau hapus anggota.',DATA.anggota.length+' anggota'],['kas','wallet','Kelola Keuangan Kas','Catat uang masuk dan keluar kas RT.',DATA.kas.length+' transaksi'],['absen','clipboard-user','Absensi Anggota','Catat kehadiran rapat atau kegiatan rutin.',DATA.absen.length+' catatan'],['proker','diagram-project','Program Kerja','Atur proker dan informasi dana.',DATA.proker.length+' proker']];$('#admin-panel').innerHTML=`<div class="admin-banner"><div><span class="chip" style="background:var(--gold);color:var(--navy)">Mode Pengurus</span><h2 style="margin-top:8px">Pusat Kendali Pengurus</h2><p>Login sebagai ${esc(user.email)}. Kelola data Karang Taruna.</p></div><button class="btn btn-ghost" onclick="handleLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</button></div><div class="grid g2">${menus.map((m,i)=>`<button class="admin-card ${i===3?'span-all':''}" onclick="bukaKelola('${m[0]}')"><span class="stat-icon ${['icon-blue','icon-gold','icon-green'][i%3]}"><i class="fa-solid fa-${m[1]}"></i></span><div><b>${m[2]}</b><span>${m[3]}</span></div><span class="chip chip-gray">${m[4]}</span><i class="fa-solid fa-chevron-right"></i></button>`).join('')}</div>`;}
+    function renderAdmin(){
+      const isAdmin = !!currentAdmin;
+      $('#admin-login').hidden = isAdmin;
+      $('#admin-panel').hidden = !isAdmin;
+      if(!isAdmin) return;
+      const menus=[['anggota','users-gear','Kelola Anggota','Tambah, ubah jabatan, atau hapus anggota.',DATA.anggota.length+' anggota'],['kas','wallet','Kelola Keuangan Kas','Catat uang masuk dan keluar kas RT.',DATA.kas.length+' transaksi'],['absen','clipboard-user','Absensi Anggota','Catat kehadiran rapat atau kegiatan rutin.',DATA.absen.length+' catatan'],['proker','diagram-project','Program Kerja','Atur proker dan informasi dana.',DATA.proker.length+' proker']];
+      $('#admin-panel').innerHTML=`<div class="admin-banner"><div><span class="chip" style="background:var(--gold);color:var(--navy)">Mode Pengurus</span><h2 style="margin-top:8px">Pusat Kendali Pengurus</h2><p>Login sebagai ${esc(currentAdmin.nama)} (@${esc(currentAdmin.username)}).</p></div><button class="btn btn-ghost" onclick="handleLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</button></div><div class="grid g2">${menus.map((m,i)=>`<button class="admin-card ${i===3?'span-all':''}" onclick="bukaKelola('${m[0]}')"><span class="stat-icon ${['icon-blue','icon-gold','icon-green'][i%3]}"><i class="fa-solid fa-${m[1]}"></i></span><div><b>${m[2]}</b><span>${m[3]}</span></div><span class="chip chip-gray">${m[4]}</span><i class="fa-solid fa-chevron-right"></i></button>`).join('')}</div>`;
+    }
+
     function togglePassword(){const i=$('#login-pass'),hidden=i.type==='password';i.type=hidden?'text':'password';$('#icon-mata').className='fa-solid fa-eye'+(hidden?'-slash':'');}
-    async function handleLogin(e){e.preventDefault();const btn=$('#login-btn');btn.disabled=true;btn.textContent='Memeriksa…';$('#login-error').hidden=true;try{const{data,error}=await db.auth.signInWithPassword({email:$('#login-user').value.trim(),password:$('#login-pass').value});if(error)throw error;const ok=await cekAdmin();if(!ok){await db.auth.signOut();throw new Error('Akun berhasil login, tetapi belum terdaftar sebagai admin. Tambahkan email ini ke tabel admin_users melalui SQL Editor.');}e.target.reset();await muatData();renderAdmin();toast('Berhasil masuk.');}catch(err){$('#login-error').hidden=false;$('#login-error').textContent=err.message||'Email atau password salah.';}finally{btn.disabled=false;btn.textContent='Masuk Sistem';}}
-    async function handleLogout(){await db.auth.signOut();renderAdmin();toast('Anda sudah keluar.');}
+    
+    async function handleLogin(e){
+      e.preventDefault();
+      const btn=$('#login-btn');
+      btn.disabled=true;
+      btn.textContent='Memeriksa…';
+      $('#login-error').hidden=true;
+      try{
+        const user = $('#login-user').value.trim();
+        const pass = $('#login-pass').value;
+
+        const {data, error} = await db.from('admin_users').select('*').eq('username', user).eq('password', pass).maybeSingle();
+        if(error) throw error;
+        if(!data) throw new Error('Username atau password salah.');
+
+        currentAdmin = data;
+        e.target.reset();
+        await muatData();
+        renderAdmin();
+        toast('Berhasil masuk.');
+      }catch(err){
+        $('#login-error').hidden=false;
+        $('#login-error').textContent='Username atau password salah.';
+      }finally{
+        btn.disabled=false;
+        btn.textContent='Masuk Sistem';
+      }
+    }
+
+    function handleLogout(){
+      currentAdmin = null;
+      renderAdmin();
+      toast('Anda sudah keluar.');
+    }
 
     const KONFIG={
       anggota:{t:'Kelola Anggota',table:'anggota',n:'anggota',add:'Tambah Anggota',fields:[['nama','Nama Lengkap','text'],['jabatan','Jabatan / Peran','text'],['status','Status','select',['Aktif','Tidak Aktif']]],row:x=>[x.nama,x.jabatan+' · '+x.status]},
@@ -1446,20 +602,19 @@
       proker:{t:'Kelola Program Kerja',table:'proker',n:'program',add:'Tambah Proker',fields:[['judul','Judul Program Kerja','text'],['tanggal','Tanggal Dimulai','date'],['status','Status','select',['Sedang Berjalan','Akan Datang','Selesai']],['deskripsi','Deskripsi Singkat','area'],['dana_masuk','Dana Masuk (Rp)','number'],['ket_masuk','Sumber Dana Masuk','text'],['dana_keluar','Dana Keluar (Rp)','number'],['ket_keluar','Keperluan Dana Keluar','text'],['terlibat','Panitia / Orang Terlibat','text'],['rundown','Rundown Acara','area']],row:x=>[x.judul,`${x.status} · masuk ${rupiah(x.dana_masuk)} · keluar ${rupiah(x.dana_keluar)}`]},
       absen:{t:'Absensi Anggota',table:'absen',n:'catatan',add:'Catat Absensi',fields:[['nama','Nama Anggota','select',()=>DATA.anggota.map(x=>x.nama)],['status','Kehadiran','select',['Hadir','Izin','Alpha']],['keterangan','Kegiatan','text'],['tanggal','Tanggal','date']],row:x=>[x.nama+' — '+x.status,x.keterangan+' · '+formatTanggal(x.tanggal)]}
     };
-    async function bukaKelola(k){fokusSebelumnya=document.activeElement;menuAktif=k;$('#modal').hidden=false;document.body.style.overflow='hidden';await tampilkanDaftar();}
+    async function bukaKelola(k){menuAktif=k;$('#modal').hidden=false;document.body.style.overflow='hidden';await tampilkanDaftar();}
     function tutupModal(){$('#modal').hidden=true;document.body.style.overflow='';if(fokusSebelumnya?.focus)fokusSebelumnya.focus();}
-    async function tampilkanDaftar(){const c=KONFIG[menuAktif],list=c.rev?[...DATA[c.table]].reverse():DATA[c.table];$('#modal-judul').textContent=c.t;$('#modal-sub').textContent=`Total ${list.length} ${c.n}`;$('#modal-isi').innerHTML=`<div class="toolbar"><button class="btn btn-navy" onclick="tampilkanForm()"><i class="fa-solid fa-plus"></i> ${c.add}</button></div><ul class="list">${list.map(x=>{const[j,s]=c.row(x);return `<li class="row"><div class="row-text"><b>${esc(j)}</b><span>${esc(s)}</span></div><div class="row-actions"><button class="icon-btn" onclick="tampilkanForm('${esc(x.id)}')" aria-label="Ubah"><i class="fa-solid fa-pen"></i></button><button class="icon-btn danger" onclick="hapusData('${esc(x.id)}')" aria-label="Hapus"><i class="fa-solid fa-trash"></i></button></div></li>`}).join('')||tampilanKosong('inbox','Belum ada data. Klik tombol tambah di atas.')}</ul>`;}
-    function buatKolomForm(c,f,v){const[n,label,type,opts]=f;let input='';const val=esc(v[n]??'');const OPSIONAL=['deskripsi','ket_masuk','ket_keluar','terlibat','rundown'];const req=OPSIONAL.includes(n)?'':'required';if(type==='select'){let a=[...(typeof opts==='function'?opts():opts)];if(v[n]&&!a.includes(v[n]))a.unshift(v[n]);input=`<select name="${n}" ${req}>${a.map(x=>`<option ${x===v[n]?'selected':''}>${esc(x)}</option>`).join('')}</select>`;}else if(type==='area'){input=`<textarea name="${n}" rows="3" ${req}>${val}</textarea>`;}else input=`<input name="${n}" type="${type}" ${type==='number'?'min="0"':''} value="${val}" ${req}>`;return `<label class="field ${['deskripsi','terlibat','rundown','keterangan'].includes(n)?'wide':''}"><span>${label}</span>${input}</label>`;}
-    function tampilkanForm(id){const c=KONFIG[menuAktif];idDiedit=id?String(id):'';let current=id?DATA[c.table].find(x=>String(x.id)===String(id)):{tanggal:hariIni(),jenis:'Masuk',status:menuAktif==='proker'?'Akan Datang':'Hadir',dana_masuk:0,dana_keluar:0};if(!current){toast('Data tidak ditemukan, coba muat ulang halaman.',true);idDiedit='';return;}if(menuAktif==='kas'&&current.proker_id){toast('Transaksi ini otomatis dari Program Kerja. Ubah lewat menu Program Kerja.',true);idDiedit='';return;}if(id){current={...current};for(const f of c.fields){if(f[2]==='date'&&current[f[0]])current[f[0]]=String(current[f[0]]).slice(0,10);}}$('#modal-judul').textContent=(id?'Ubah — ':'Baru — ')+c.t;$('#modal-sub').textContent='Isi data lalu tekan Simpan';$('#modal-isi').innerHTML=`<form class="form" onsubmit="simpanData(event)">${c.fields.map(f=>buatKolomForm(c,f,current)).join('')}<div class="form-actions"><button type="button" class="btn btn-outline" onclick="tampilkanDaftar()">Batal</button><button class="btn btn-navy"><i class="fa-solid fa-check"></i> Simpan</button></div></form>`;$('#modal-isi input,#modal-isi select')?.focus();}
-    async function simpanData(e){e.preventDefault();const c=KONFIG[menuAktif],payload={},btn=e.target.querySelector('button:not([type="button"])');for(const f of c.fields){const n=f[0],v=e.target.elements[n].value.trim();payload[n]=f[2]==='number'?(Number(v)||0):v;}if(btn){btn.disabled=true;btn.textContent='Menyimpan…';}let saved=false;try{let result;if(idDiedit){result=await db.from(c.table).update(payload).eq('id',idDiedit).select();if(result.error)throw result.error;if(!result.data||!result.data.length)throw new Error('Tidak ada data yang berubah. Pastikan masih login sebagai admin dan policy UPDATE di Supabase sudah aktif.');}else{result=await db.from(c.table).insert(payload).select();if(result.error)throw result.error;}const row=result.data[0];if(menuAktif==='proker')await sinkronKasProker({...row,...payload});saved=true;}catch(err){toast('Gagal menyimpan: '+err.message,true);if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-check"></i> Simpan';}return;}try{await muatData();await tampilkanDaftar();toast('Data berhasil disimpan.');}catch(err){toast('Data tersimpan, tetapi gagal memuat ulang: '+err.message,true);}}
+    async function tampilkanDaftar(){const c=KONFIG[menuAktif],list=c.rev?[...DATA[c.table]].reverse():DATA[c.table];$('#modal-judul').textContent=c.t;$('#modal-sub').textContent=`Total ${list.length} ${c.n}`;$('#modal-isi').innerHTML=`<div class="toolbar"><button class="btn btn-navy" onclick="tampilkanForm()"><i class="fa-solid fa-plus"></i> ${c.add}</button></div><ul class="list">${list.map(x=>{const[j,s]=c.row(x);return `<li class="row"><div class="row-text"><b>${esc(j)}</b><span>${esc(s)}</span></div><div class="row-actions"><button class="icon-btn" onclick="tampilkanForm('${x.id}')" aria-label="Ubah"><i class="fa-solid fa-pen"></i></button><button class="icon-btn danger" onclick="hapusData('${x.id}')" aria-label="Hapus"><i class="fa-solid fa-trash"></i></button></div></li>`}).join('')||tampilanKosong('inbox','Belum ada data.')}</ul>`;}
+    function buatKolomForm(c,f,v){const[n,label,type,opts]=f;let input='';const val=esc(v[n]??'');if(type==='select'){const a=typeof opts==='function'?opts():opts;input=`<select name="${n}" required>${a.map(x=>`<option ${x===v[n]?'selected':''}>${esc(x)}</option>`).join('')}</select>`;}else if(type==='area'){input=`<textarea name="${n}" rows="3" required>${val}</textarea>`;}else input=`<input name="${n}" type="${type}" ${type==='number'?'min="0"':''} value="${val}" required>`;return `<label class="field ${['deskripsi','terlibat','rundown','keterangan'].includes(n)?'wide':''}"><span>${label}</span>${input}</label>`;}
+    function tampilkanForm(id){const c=KONFIG[menuAktif];idDiedit=id||'';const current=id?DATA[c.table].find(x=>x.id===id):{tanggal:hariIni(),jenis:'Masuk',status:menuAktif==='proker'?'Akan Datang':'Hadir',dana_masuk:0,dana_keluar:0};$('#modal-judul').textContent=(id?'Ubah — ':'Baru — ')+c.t;$('#modal-sub').textContent='Isi data lalu tekan Simpan';$('#modal-isi').innerHTML=`<form class="form" onsubmit="simpanData(event)">${c.fields.map(f=>buatKolomForm(c,f,current)).join('')}<div class="form-actions"><button type="button" class="btn btn-outline" onclick="tampilkanDaftar()">Batal</button><button class="btn btn-navy"><i class="fa-solid fa-check"></i> Simpan</button></div></form>`;$('#modal-isi input,#modal-isi select')?.focus();}
+    async function simpanData(e){e.preventDefault();const c=KONFIG[menuAktif],payload={};for(const f of c.fields){const n=f[0],v=e.target.elements[n].value.trim();payload[n]=f[2]==='number'?(Number(v)||0):v;}try{let result;if(idDiedit)result=await db.from(c.table).update(payload).eq('id',idDiedit);else result=await db.from(c.table).insert(payload);if(result.error)throw result.error;if(menuAktif==='proker'){const id=idDiedit||null;if(id){const p=DATA.proker.find(x=>x.id===idDiedit);await sinkronKasProker({...p,...payload});}else{const{data}=await db.from('proker').select('*').order('created_at',{ascending:false}).limit(1).single();await sinkronKasProker(data);}}await muatData();await tampilkanDaftar();toast('Data berhasil disimpan.');}catch(err){toast('Gagal menyimpan: '+err.message,true);}}
     async function sinkronKasProker(p){const id=p.id;const del=await db.from('kas').delete().eq('proker_id',id);if(del.error)throw del.error;const rows=[];if(Number(p.dana_masuk)>0)rows.push({tanggal:p.tanggal,jenis:'Masuk',jumlah:p.dana_masuk,proker_id:id,keterangan:`Proker (${p.judul}): ${p.ket_masuk||'Dana Masuk Proker'}`});if(Number(p.dana_keluar)>0)rows.push({tanggal:p.tanggal,jenis:'Keluar',jumlah:p.dana_keluar,proker_id:id,keterangan:`Proker (${p.judul}): ${p.ket_keluar||'Biaya Proker'}`});if(rows.length){const ins=await db.from('kas').insert(rows);if(ins.error)throw ins.error;}}
     async function hapusData(id){const yes=await tanyaKonfirmasi('Yakin ingin menghapus data ini?');if(!yes)return;const c=KONFIG[menuAktif];try{if(menuAktif==='proker'){const d=await db.from('kas').delete().eq('proker_id',id);if(d.error)throw d.error;}const r=await db.from(c.table).delete().eq('id',id);if(r.error)throw r.error;await muatData();await tampilkanDaftar();toast('Data dihapus.');}catch(err){toast('Gagal menghapus: '+err.message,true);}}
     function tanyaKonfirmasi(msg){return new Promise(resolve=>{$('#konfirmasi-teks').textContent=msg;$('#konfirmasi').hidden=false;tutupKonfirmasi=v=>{$('#konfirmasi').hidden=true;tutupKonfirmasi=null;resolve(v)};$('#konfirmasi-ya').onclick=()=>tutupKonfirmasi(true);$('#konfirmasi-batal').onclick=()=>tutupKonfirmasi(false);});}
-    async function muatData(){const tables=['anggota','kas','proker'];const results=await Promise.all(tables.map(t=>db.from(t).select('*').order('created_at',{ascending:false})));for(let i=0;i<tables.length;i++){if(results[i].error)throw results[i].error;DATA[tables[i]]=results[i].data||[];}DATA.absen=await cekAdmin()?((await db.from('absen').select('*').order('created_at',{ascending:false})).data||[]):[];renderSemua();}
+    async function muatData(){const tables=['anggota','kas','proker','absen'];const results=await Promise.all(tables.map(t=>db.from(t).select('*').order('created_at',{ascending:false})));for(let i=0;i<tables.length;i++){if(results[i].error)throw results[i].error;DATA[tables[i]]=results[i].data||[];}renderSemua();}
     function renderSemua(){renderBeranda();renderAnggota();renderKas();renderProker();}
     addEventListener('keydown',e=>{if(e.key==='Escape'){if(tutupKonfirmasi)tutupKonfirmasi(false);else if(!$('#modal').hidden)tutupModal();}});
-    async function mulai(){try{if(SUPABASE_URL.includes('PASTE_')||SUPABASE_ANON_KEY.includes('PASTE_')){toast('Isi SUPABASE_URL dan SUPABASE_ANON_KEY di bagian atas file HTML.',true);return;}await muatData();await renderAdmin();go(location.hash.slice(1)||'dashboard');}catch(e){console.error(e);toast('Gagal memuat database: '+e.message,true);}}
-    db.auth.onAuthStateChange(()=>{renderAdmin();});
+    async function mulai(){try{if(SUPABASE_URL.includes('xxxxxx')||SUPABASE_ANON_KEY.includes('sb_publishable_...')){toast('Isi SUPABASE_URL dan SUPABASE_ANON_KEY di bagian bawah file HTML.',true);return;}await muatData();renderAdmin();go(location.hash.slice(1)||'dashboard');}catch(e){console.error(e);toast('Gagal memuat database: '+e.message,true);}}
     mulai();
   </script>
 
